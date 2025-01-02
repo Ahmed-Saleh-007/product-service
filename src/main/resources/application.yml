@@ -3,10 +3,11 @@ spring:
     name: product-service
 
   datasource:
-    url: jdbc:h2:mem:productdb;
-    driverClassName: org.h2.Driver
-    username: ejada
-    password: 1234 # Must be configured in Vault
+    url: jdbc:h2:file:/data/ecommerce #this if you want the database to be persistent
+#    url: jdbc:h2:mem:ecommerce;
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
 
   h2:
     console:
@@ -17,6 +18,10 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: none
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
 
 logging:
   level:
