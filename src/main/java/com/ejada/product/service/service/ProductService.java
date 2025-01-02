@@ -14,6 +14,7 @@ public class ProductService {
 
     public List<Objects> getProducts() {
         log.info("Get Products");
+        //throw new BusinessException("Dev Error", "001", HttpStatus.BAD_REQUEST);
         return List.of();
     }
 
