@@ -15,14 +15,14 @@ public class AppExceptionsHandler {
     @ExceptionHandler({BusinessException.class})
     public ResponseEntity<Object> handleBusinessLogicException(BusinessException ex) {
         log.error("Exception: [{}]", ex.getMessage());
-        ApiBusinessError apiBusinessError = ApiBusinessError.builder()
+        ApiBusinessErrorResponse apiBusinessErrorResponse = ApiBusinessErrorResponse.builder()
                 .httpStatus(ex.getHttpStatus().getReasonPhrase())
                 .errorCode(ex.getErrorCode())
                 .errorMessage(ex.getMessage())
                 .traceId(UUID.randomUUID().toString())
                 .timestamp(LocalDateTime.now())
                 .build();
-        return ResponseEntity.status(ex.getHttpStatus()).body(apiBusinessError);
+        return ResponseEntity.status(ex.getHttpStatus()).body(apiBusinessErrorResponse);
     }
 
 }

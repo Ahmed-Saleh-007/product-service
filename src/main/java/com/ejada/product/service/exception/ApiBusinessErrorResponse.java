@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApiBusinessError {
+public class ApiBusinessErrorResponse {
 
     private String traceId;
 
