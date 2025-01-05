@@ -1,5 +1,5 @@
 CREATE TABLE categories (
-    id INT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE,
     description TEXT,
     created_at TIMESTAMP NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE categories (
 );
 
 CREATE TABLE products (
-      id INT PRIMARY KEY,
+      id INT AUTO_INCREMENT PRIMARY KEY,
       name VARCHAR(255) NOT NULL UNIQUE,
       description VARCHAR(2000),
       category_id INT NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE products (
 );
 
 CREATE TABLE customers (
-       id INT PRIMARY KEY,
+       id INT AUTO_INCREMENT PRIMARY KEY,
        name VARCHAR(255) NOT NULL,
        email VARCHAR(255) NOT NULL UNIQUE,
        phone VARCHAR(20),
@@ -30,7 +30,7 @@ CREATE TABLE customers (
 );
 
 CREATE TABLE orders (
-        id INT PRIMARY KEY,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         customer_id INT NOT NULL,
         total_amount DECIMAL(10,2) NOT NULL,
         status VARCHAR(50),
@@ -40,7 +40,7 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE order_products (
-        id INT PRIMARY KEY,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         order_id INT NOT NULL,
         product_id INT NOT NULL,
         quantity INT NOT NULL,
