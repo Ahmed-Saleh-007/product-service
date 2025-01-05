@@ -5,6 +5,7 @@ import com.ejada.product.service.model.dto.CreateProductResponse;
 import com.ejada.product.service.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +56,7 @@ public class ProductController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error")
     @ApiResponse(responseCode = "502", description = "Bad Gateway")
     public ResponseEntity<CreateProductResponse> createProduct(
-            @RequestBody CreateProductRequest request
+            @Valid @RequestBody CreateProductRequest request
             ) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.createProduct(request));
     }
