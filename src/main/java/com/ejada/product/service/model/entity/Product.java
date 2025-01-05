@@ -38,11 +38,8 @@ public class Product {
     private Integer id;
 
     @Column(nullable = false, unique = true)
-    @NotBlank(message = "Product name must not be blank")
-    @Size(max = 255, message = "Product name must not exceed 255 characters")
     private String name;
 
-    @Size(max = 2000, message = "Description must not exceed 2000 characters")
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -50,11 +47,9 @@ public class Product {
     private Category category;
 
     @Column(nullable = false)
-    @DecimalMin(value = "0.0", inclusive = true, message = "Price must be greater than or equal to 0")
     private BigDecimal price;
 
     @Column(name = "stock_quantity", nullable = false)
-    @Min(value = 0, message = "Stock quantity must be non-negative")
     private Integer stockQuantity;
 
     @Column(name = "deleted_at")
