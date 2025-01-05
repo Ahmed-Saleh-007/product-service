@@ -11,6 +11,7 @@ import com.ejada.product.service.model.mapper.ProductMapper;
 import com.ejada.product.service.model.response.ProductWithPagingResponse;
 import com.ejada.product.service.repository.CategoryRepository;
 import com.ejada.product.service.repository.ProductRepository;
+import com.ejada.product.service.repository.facade.ProductRepositoryFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,13 +35,14 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ProductRepositoryFacade productRepositoryFacade;
 
     private final ProductMapper productMapper;
 
     public ProductWithPagingResponse getProducts(ProductFilter productFilter) {
         log.info("Get products by filter: [{}]", productFilter.toString());
         validateProductFilter(productFilter);
-        Page<Product> products = productRepository
+        Page<Product> products = productRepositoryFacade
                 .findAllByCategoryAndPriceRange(productFilter, getProductPageRequest(productFilter));
         return ProductWithPagingResponse.builder()
                 .products(productMapper.mapToProductResponse(products.getContent()))

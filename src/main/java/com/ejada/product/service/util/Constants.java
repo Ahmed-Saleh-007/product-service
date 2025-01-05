@@ -21,4 +21,6 @@ public class Constants {
     public static final String PRODUCT_PRICE_MIN_VALUE_ERROR_MESSAGE = "Price must be greater than or equal to 0.0";
     public static final String PRODUCT_QUANTITY_MIN_VALUE_ERROR_MESSAGE = "Stock quantity must be non-negative";
 
+    public static final String DATABASE_GENERAL_ERROR_MESSAGE = "Error occurred while connecting to database";
+
 }
