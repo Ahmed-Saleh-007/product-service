@@ -28,7 +28,7 @@ public class CreateProductRequest {
     @JsonProperty("Quantity")
     private Integer quantity;
     @NotNull
-    @JsonProperty("Category")
-    private Category category;
+    @JsonProperty("CategoryId")
+    private Integer categoryId;
 
 }

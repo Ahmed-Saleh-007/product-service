@@ -12,7 +12,6 @@ public interface ProductEntityMapper {
     @Mapping(target = "name", source = "name")
     @Mapping(target = "description", source = "description")
     @Mapping(target = "price", source = "price")
-    @Mapping(target = "category", source = "category")
     @Mapping(target = "stockQuantity", source = "quantity")
     Product mapToProductEntity(CreateProductRequest createProductRequest);
 }
