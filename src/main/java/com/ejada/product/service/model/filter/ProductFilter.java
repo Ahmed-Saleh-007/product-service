@@ -25,8 +25,12 @@ public class ProductFilter {
 
     private boolean isInStock;
 
-    private int pageNumber;
+    private int pageIndex;
 
     private int pageSize;
+
+    private String sortOrder;
+
+    private String sortField;
 
 }

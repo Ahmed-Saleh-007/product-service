@@ -32,7 +32,7 @@ class ProductControllerTest {
                         .param("minPrice", "100.0")
                         .param("maxPrice", "500.0")
                         .param("isInStock", "true")
-                        .param("pageNumber", "1")
+                        .param("pageIndex", "1")
                         .param("pageSize", "20")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());

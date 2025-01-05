@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @TestInstance(PER_CLASS)
-public class ProductServiceTest {
+class ProductServiceTest {
 
     @Autowired
     private ProductService productService;
@@ -40,8 +40,42 @@ public class ProductServiceTest {
                 .thenReturn(mockPage);
         assertDoesNotThrow(() -> productService.getProducts(
                 ProductFilter.builder()
-                        .pageNumber(0)
+                        .pageIndex(0)
                         .pageSize(10)
+                        .build()));
+    }
+
+    @Test
+    void testGetProductsWithAscOrderSuccess() {
+        Page<Product> mockPage = new PageImpl<>(List.of(
+                Product.builder().id(1).name("Product 1").stockQuantity(1).build(),
+                Product.builder().id(2).name("Product 2").stockQuantity(0).build()
+        ));
+        when(productRepository.findAllByCategoryAndPriceRange(any(), any()))
+                .thenReturn(mockPage);
+        assertDoesNotThrow(() -> productService.getProducts(
+                ProductFilter.builder()
+                        .pageIndex(0)
+                        .pageSize(10)
+                        .sortField("price")
+                        .sortOrder("asc")
+                        .build()));
+    }
+
+    @Test
+    void testGetProductsWithDescOrderSuccess() {
+        Page<Product> mockPage = new PageImpl<>(List.of(
+                Product.builder().id(1).name("Product 1").stockQuantity(1).build(),
+                Product.builder().id(2).name("Product 2").stockQuantity(0).build()
+        ));
+        when(productRepository.findAllByCategoryAndPriceRange(any(), any()))
+                .thenReturn(mockPage);
+        assertDoesNotThrow(() -> productService.getProducts(
+                ProductFilter.builder()
+                        .pageIndex(0)
+                        .pageSize(10)
+                        .sortField("price")
+                        .sortOrder("desc")
                         .build()));
     }
 
@@ -55,7 +89,7 @@ public class ProductServiceTest {
                 .thenReturn(mockPage);
         assertThrows(BusinessException.class, () -> productService.getProducts(
                 ProductFilter.builder()
-                        .pageNumber(0)
+                        .pageIndex(0)
                         .pageSize(10)
                         .minPrice(1000.0)
                         .maxPrice(100.0)

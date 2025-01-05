@@ -47,16 +47,20 @@ public class ProductController {
             @Parameter(description = "Category Ids") @RequestParam(required = false) List<Long> categoryIds,
             @Parameter(description = "Minimum Product Price") @RequestParam(required = false) @Min(0) Double minPrice,
             @Parameter(description = "Maximum Product Price") @RequestParam(required = false) @Min(0) Double maxPrice,
-            @Parameter(description = "Product Availability") @RequestParam(defaultValue = "false") boolean isInStock,
-            @Parameter(description = "Page Number") @RequestParam(defaultValue = "0") @Min(0) int pageNumber,
-            @Parameter(description = "Page Size") @RequestParam(defaultValue = "10") @Min(1) int pageSize) {
+            @Parameter(description = "Is In Stock") @RequestParam(defaultValue = "false") boolean isInStock,
+            @Parameter(description = "Page Index") @RequestParam(defaultValue = "0") @Min(0) int pageIndex,
+            @Parameter(description = "Page Size") @RequestParam(defaultValue = "10") @Min(1) int pageSize,
+            @Parameter(description = "Sort Order") @RequestParam(required = false) String sortOrder,
+            @Parameter(description = "Sort Field") @RequestParam(required = false) String sortField) {
         ProductFilter productFilter = ProductFilter.builder()
                 .categoryIds(categoryIds)
                 .minPrice(minPrice)
                 .maxPrice(maxPrice)
                 .isInStock(isInStock)
-                .pageNumber(pageNumber)
+                .pageIndex(pageIndex)
                 .pageSize(pageSize)
+                .sortOrder(sortOrder)
+                .sortField(sortField)
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts(productFilter));
     }

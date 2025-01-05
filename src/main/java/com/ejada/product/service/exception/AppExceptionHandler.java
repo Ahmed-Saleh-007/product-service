@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Slf4j
 @RestControllerAdvice
-public class AppExceptionsHandler {
+public class AppExceptionHandler {
 
     @ExceptionHandler({BusinessException.class})
     public ResponseEntity<Object> handleBusinessLogicException(BusinessException ex) {
