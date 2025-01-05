@@ -3,7 +3,7 @@ package com.ejada.product.service.service;
 import com.ejada.product.service.exception.BusinessException;
 import com.ejada.product.service.model.entity.Product;
 import com.ejada.product.service.model.filter.ProductFilter;
-import com.ejada.product.service.repository.ProductRepository;
+import com.ejada.product.service.repository.facade.ProductRepositoryFacade;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ class ProductServiceTest {
     private ProductService productService;
 
     @MockitoBean
-    private ProductRepository productRepository;
+    private ProductRepositoryFacade productRepositoryFacade;
 
     @Test
     void testGetProductsSuccess() {
@@ -36,7 +36,7 @@ class ProductServiceTest {
                 Product.builder().id(1).name("Product 1").stockQuantity(1).build(),
                 Product.builder().id(2).name("Product 2").stockQuantity(0).build()
         ));
-        when(productRepository.findAllByCategoryAndPriceRange(any(), any()))
+        when(productRepositoryFacade.findAllByCategoryAndPriceRange(any(), any()))
                 .thenReturn(mockPage);
         assertDoesNotThrow(() -> productService.getProducts(
                 ProductFilter.builder()
@@ -51,7 +51,7 @@ class ProductServiceTest {
                 Product.builder().id(1).name("Product 1").stockQuantity(1).build(),
                 Product.builder().id(2).name("Product 2").stockQuantity(0).build()
         ));
-        when(productRepository.findAllByCategoryAndPriceRange(any(), any()))
+        when(productRepositoryFacade.findAllByCategoryAndPriceRange(any(), any()))
                 .thenReturn(mockPage);
         assertDoesNotThrow(() -> productService.getProducts(
                 ProductFilter.builder()
@@ -68,7 +68,7 @@ class ProductServiceTest {
                 Product.builder().id(1).name("Product 1").stockQuantity(1).build(),
                 Product.builder().id(2).name("Product 2").stockQuantity(0).build()
         ));
-        when(productRepository.findAllByCategoryAndPriceRange(any(), any()))
+        when(productRepositoryFacade.findAllByCategoryAndPriceRange(any(), any()))
                 .thenReturn(mockPage);
         assertDoesNotThrow(() -> productService.getProducts(
                 ProductFilter.builder()
@@ -81,12 +81,6 @@ class ProductServiceTest {
 
     @Test
     void testGetProductsWithInvalidFilterFails() {
-        Page<Product> mockPage = new PageImpl<>(List.of(
-                Product.builder().id(1).name("Product 1").stockQuantity(1).build(),
-                Product.builder().id(2).name("Product 2").stockQuantity(0).build()
-        ));
-        when(productRepository.findAllByCategoryAndPriceRange(any(), any()))
-                .thenReturn(mockPage);
         assertThrows(BusinessException.class, () -> productService.getProducts(
                 ProductFilter.builder()
                         .pageIndex(0)
