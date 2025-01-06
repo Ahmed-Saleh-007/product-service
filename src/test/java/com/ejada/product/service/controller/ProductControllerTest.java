@@ -37,6 +37,10 @@ class ProductControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+   @Test
+    void testSoftDeleteProductSuccessfully() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put(PRODUCTS_BASE_URL + "/softDelete/{id}", 8)).andExpect(status().isOk());
+    }
 
     @Test
     void testCreateProductsSuccessfully() throws Exception {

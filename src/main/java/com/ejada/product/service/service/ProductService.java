@@ -13,6 +13,7 @@ import com.ejada.product.service.repository.CategoryRepository;
 import com.ejada.product.service.repository.ProductRepository;
 import com.ejada.product.service.repository.facade.CategoryRepositoryFacade;
 import com.ejada.product.service.repository.facade.ProductRepositoryFacade;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static com.ejada.product.service.util.Constants.INVALID_CATEGORY_ERROR_MESSAGE;
@@ -69,6 +71,20 @@ public class ProductService {
                 .quantity(request.getQuantity())
                 .build();
     }
+    // Soft delete
+    public void softDeleteProduct(int productId) {
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
+
+        if (product.getDeletedAt() == null) {
+            product.setDeletedAt(LocalDateTime.now());
+            productRepository.save(product);
+        } else {
+            throw new IllegalStateException("Product is already deleted.");
+        }
+    }
+
 
     private void validateProductFilter(ProductFilter productFilter) {
         if (productFilter.getMinPrice() != null && productFilter.getMaxPrice() != null
