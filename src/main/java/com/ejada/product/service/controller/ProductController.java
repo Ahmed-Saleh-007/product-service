@@ -80,11 +80,22 @@ public class ProductController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error")
     @ApiResponse(responseCode = "502", description = "Bad Gateway")
     public ResponseEntity<CreateProductResponse> createProduct(
-            @Valid @RequestBody CreateProductRequest request
-    ) {
+            @Valid @RequestBody CreateProductRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.createProduct(request));
     }
+
     @DeleteMapping("/{productId}")
+    @Operation(description = "Soft Delete Product", summary = "Soft Delete Product", tags = "Products")
+    @ApiResponse(responseCode = "200", description = "Success")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
+    @ApiResponse(responseCode = "400", description = "Bad request")
+    @ApiResponse(responseCode = "403", description = "Forbidden")
+    @ApiResponse(responseCode = "404", description = "Not found")
+    @ApiResponse(responseCode = "405", description = "Method Not Allowed")
+    @ApiResponse(responseCode = "406", description = "Not Acceptable")
+    @ApiResponse(responseCode = "429", description = "Too Many Requests")
+    @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    @ApiResponse(responseCode = "502", description = "Bad Gateway")
     public ResponseEntity<String> softDelete(@PathVariable int productId) {
         productService.softDeleteProduct(productId);
         return ResponseEntity.status(HttpStatus.OK).body(PRODUCT_SOFT_DELETED_SUCCESSFULLY);
