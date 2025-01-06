@@ -28,5 +28,10 @@ public class Constants {
     public static final String CUSTOMER_NOT_FOUND = "Customer not found";
     public static final String INSUFFICIENT_STOCK = "Insufficient stock for products: ";
     public static final String INTERNAL_SERVER_ERROR = "Unexpected error occurred.";
+    public static final String CUSTOMER_REQUIRED = "Customer ID is required.";
+    public static final String MIN_PRODUCTS_IN_ORDER = "At least one product must be included in the order.";
+    public static final String PRODUCT_REQUIRED = "Product ID is required.";
+    public static final String PRODUCT_QUANTITY_REQUIRED = "Quantity is required.";
+    public static final String POSITIVE_QUANTITY = "Quantity must be greater than zero.";
 
 }
