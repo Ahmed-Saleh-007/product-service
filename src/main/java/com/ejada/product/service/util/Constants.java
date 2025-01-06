@@ -22,5 +22,6 @@ public class Constants {
     public static final String PRODUCT_QUANTITY_MIN_VALUE_ERROR_MESSAGE = "Stock quantity must be non-negative";
 
     public static final String DATABASE_GENERAL_ERROR_MESSAGE = "Error occurred while connecting to database";
+    public static final String INVALID_DATES_FILTER_ERROR_MESSAGE = "Start date should be before end date";
 
 }

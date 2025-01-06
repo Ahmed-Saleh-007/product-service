@@ -37,6 +37,20 @@ public class ProductRepositoryFacade {
         }
     }
 
+    public void save(Product product) {
+        try {
+            productRepository.save(product);
+        } catch (Exception e) {
+            log.error("Error occurred while saving product ProductRepositoryFacade: [{}]", product.toString());
+            throw BusinessException.builder()
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .errorCode(ErrorCodeEnum.INTERNAL_SERVER_ERROR.getCode())
+                    .message(DATABASE_GENERAL_ERROR_MESSAGE)
+                    .build();
+        }
+
+    }
+
     public Optional<Product> findByName(String name) {
         log.info("Find product by name ProductRepositoryFacade: [{}]", name);
         try {

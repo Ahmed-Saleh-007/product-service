@@ -33,9 +33,6 @@ import static com.ejada.product.service.util.Constants.SORT_ORDER_DESC;
 @Slf4j
 @RequiredArgsConstructor
 public class ProductService {
-
-    private final ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
     private final ProductRepositoryFacade productRepositoryFacade;
     private final CategoryRepositoryFacade categoryRepositoryFacade;
 
@@ -60,7 +57,7 @@ public class ProductService {
         Optional<Category> category = categoryRepositoryFacade.findById(request.getCategoryId());
         validateCategory(category);
         productEntity.setCategory(category.get());
-        productRepository.save(productEntity);
+        productRepositoryFacade.save(productEntity);
         return CreateProductResponse.builder()
                 .name(request.getName())
                 .price(request.getPrice())
