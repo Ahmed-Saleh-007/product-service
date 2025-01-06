@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import static com.ejada.product.service.util.Constants.DATABASE_GENERAL_ERROR_MESSAGE;
 
 @Service
@@ -27,6 +29,20 @@ public class ProductRepositoryFacade {
             return productRepository.findAllByCategoryAndPriceRange(productFilter, pageable);
         } catch (Exception e) {
             log.error("Error occurred while finding products by category and price range: [{}]", e.getMessage());
+            throw BusinessException.builder()
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .errorCode(ErrorCodeEnum.INTERNAL_SERVER_ERROR.getCode())
+                    .message(DATABASE_GENERAL_ERROR_MESSAGE)
+                    .build();
+        }
+    }
+
+    public Optional<Product> findByName(String name) {
+        log.info("Find product by name ProductRepositoryFacade: [{}]", name);
+        try {
+            return productRepository.findByName(name);
+        } catch (Exception e) {
+            log.error("Error occurred while finding product by name ProductRepositoryFacade: [{}]", name);
             throw BusinessException.builder()
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                     .errorCode(ErrorCodeEnum.INTERNAL_SERVER_ERROR.getCode())
