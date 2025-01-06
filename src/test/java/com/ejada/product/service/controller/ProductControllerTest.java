@@ -39,7 +39,7 @@ class ProductControllerTest {
     }
    @Test
     void testSoftDeleteProductSuccessfully() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put(PRODUCTS_BASE_URL + "/softDelete/{id}", 8)).andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.delete(PRODUCTS_BASE_URL + "/{id}", 1)).andExpect(status().isOk());
     }
 
 }

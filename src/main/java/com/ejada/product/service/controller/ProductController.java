@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.ejada.product.service.util.Constants.PRODUCT_SOFT_DELETED_SUCCESSFULLY;
+
 @RestController
 @Validated
 @RequestMapping("/api/products")
@@ -82,10 +84,10 @@ public class ProductController {
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.createProduct(request));
     }
-    @PutMapping("softDelete/{productId}")
+    @DeleteMapping("/{productId}")
     public ResponseEntity<String> softDelete(@PathVariable int productId) {
         productService.softDeleteProduct(productId);
-        return ResponseEntity.ok("Product soft deleted successfully."+productId);
+        return ResponseEntity.status(HttpStatus.OK).body(PRODUCT_SOFT_DELETED_SUCCESSFULLY);
     }
 
 }
