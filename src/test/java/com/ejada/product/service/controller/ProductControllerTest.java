@@ -38,4 +38,21 @@ class ProductControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void testCreateProductsSuccessfully() throws Exception {
+        String content = """
+                {
+                    "Name": "productName12356",
+                    "Quantity": 5,
+                    "Price": 4.0,
+                    "CategoryId": 1
+                }
+                """;
+        mockMvc.perform(MockMvcRequestBuilders.post(PRODUCTS_BASE_URL)
+                        .content(content)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
 }
