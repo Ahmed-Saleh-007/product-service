@@ -26,10 +26,12 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static com.ejada.product.service.util.Constants.INVALID_CATEGORY_ERROR_MESSAGE;
+import static com.ejada.product.service.util.Constants.PRODUCT_NOT_FOUND_ERROR_MESSAGE;
+import static com.ejada.product.service.util.Constants.PRODUCT_IS_ALREADY_DELETED;
 import static com.ejada.product.service.util.Constants.INVALID_PRODUCT_PRICE_FILTER_ERROR_MESSAGE;
-import static com.ejada.product.service.util.Constants.PRODUCT_ALREADY_EXISTS_ERROR_MESSAGE;
 import static com.ejada.product.service.util.Constants.SORT_ORDER_DESC;
+import static com.ejada.product.service.util.Constants.INVALID_CATEGORY_ERROR_MESSAGE;
+import static com.ejada.product.service.util.Constants.PRODUCT_ALREADY_EXISTS_ERROR_MESSAGE;
 
 @Service
 @Slf4j
@@ -73,15 +75,21 @@ public class ProductService {
     }
     // Soft delete
     public void softDeleteProduct(int productId) {
-
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
+                .orElseThrow(() -> BusinessException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+                        .errorCode(ErrorCodeEnum.BAD_REQUEST.getCode())
+                        .message(PRODUCT_NOT_FOUND_ERROR_MESSAGE+productId)
+                        .build());
 
         if (product.getDeletedAt() == null) {
             product.setDeletedAt(LocalDateTime.now());
             productRepository.save(product);
         } else {
-            throw new IllegalStateException("Product is already deleted.");
+
+            throw BusinessException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+                    .errorCode(ErrorCodeEnum.BAD_REQUEST.getCode())
+                    .message(PRODUCT_IS_ALREADY_DELETED)
+                    .build();
         }
     }
 

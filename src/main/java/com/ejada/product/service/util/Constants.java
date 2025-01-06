@@ -20,7 +20,9 @@ public class Constants {
     public static final String DESCRIPTION_MAX_SIZE_ERROR_MESSAGE = "Description must not exceed 2000 characters";
     public static final String PRODUCT_PRICE_MIN_VALUE_ERROR_MESSAGE = "Price must be greater than or equal to 0.0";
     public static final String PRODUCT_QUANTITY_MIN_VALUE_ERROR_MESSAGE = "Stock quantity must be non-negative";
-
     public static final String DATABASE_GENERAL_ERROR_MESSAGE = "Error occurred while connecting to database";
+    public static final String PRODUCT_SOFT_DELETED_SUCCESSFULLY = "Product deleted successfully.";
+    public static final String PRODUCT_NOT_FOUND_ERROR_MESSAGE = "Product not found with id: ";
+    public static final String PRODUCT_IS_ALREADY_DELETED = "Product is already deleted.";
 
 }
