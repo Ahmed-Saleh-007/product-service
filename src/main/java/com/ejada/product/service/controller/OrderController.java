@@ -49,7 +49,7 @@ public class OrderController {
     @PostMapping
     @Operation(description = "Create Order", summary = "Create Order", tags = "Orders")
     @ApiResponse(responseCode = "200", description = "Success",
-            content = @Content(schema = @Schema(implementation = ApiBusinessErrorResponse.class)))
+            content = @Content(schema = @Schema(implementation = CreateOrderResponse.class)))
     @ApiResponse(responseCode = "401", description = "Unauthorized",
             content = @Content(schema = @Schema(implementation = ApiBusinessErrorResponse.class)))
     @ApiResponse(responseCode = "400", description = "Bad request",

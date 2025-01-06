@@ -1,7 +1,5 @@
 package com.ejada.product.service.repository.facade;
 
-import com.ejada.product.service.exception.BusinessException;
-import com.ejada.product.service.exception.ErrorCodeEnum;
 import com.ejada.product.service.model.entity.Product;
 import com.ejada.product.service.model.filter.ProductFilter;
 import com.ejada.product.service.repository.ProductRepository;
@@ -9,12 +7,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+import static com.ejada.product.service.exception.CommonExceptionHandler.handleInternalServerErrorException;
 import static com.ejada.product.service.util.Constants.DATABASE_GENERAL_ERROR_MESSAGE;
 
 @Service
@@ -30,11 +28,7 @@ public class ProductRepositoryFacade {
             return productRepository.findAllByCategoryAndPriceRange(productFilter, pageable);
         } catch (Exception e) {
             log.error("Error occurred while finding products by category and price range: [{}]", e.getMessage());
-            throw BusinessException.builder()
-                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .errorCode(ErrorCodeEnum.INTERNAL_SERVER_ERROR.getCode())
-                    .message(DATABASE_GENERAL_ERROR_MESSAGE)
-                    .build();
+            throw handleInternalServerErrorException(DATABASE_GENERAL_ERROR_MESSAGE);
         }
     }
 
@@ -44,11 +38,7 @@ public class ProductRepositoryFacade {
             return productRepository.findByName(name);
         } catch (Exception e) {
             log.error("Error occurred while finding product by name ProductRepositoryFacade: [{}]", name);
-            throw BusinessException.builder()
-                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .errorCode(ErrorCodeEnum.INTERNAL_SERVER_ERROR.getCode())
-                    .message(DATABASE_GENERAL_ERROR_MESSAGE)
-                    .build();
+            throw handleInternalServerErrorException(DATABASE_GENERAL_ERROR_MESSAGE);
         }
     }
 
@@ -58,11 +48,7 @@ public class ProductRepositoryFacade {
             return productRepository.findAllByIdExcludingDeleted(ids);
         } catch (Exception e) {
             log.error("Error occurred while finding product by name ProductRepositoryFacade: [{}]", e.getMessage());
-            throw BusinessException.builder()
-                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .errorCode(ErrorCodeEnum.INTERNAL_SERVER_ERROR.getCode())
-                    .message(DATABASE_GENERAL_ERROR_MESSAGE)
-                    .build();
+            throw handleInternalServerErrorException(DATABASE_GENERAL_ERROR_MESSAGE);
         }
     }
 
@@ -72,11 +58,7 @@ public class ProductRepositoryFacade {
              productRepository.save(product);
         } catch (Exception e) {
             log.error("Error occurred while updating product with id [{}] ProductRepositoryFacade: [{}]", product.getId(),e.getMessage());
-            throw BusinessException.builder()
-                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .errorCode(ErrorCodeEnum.INTERNAL_SERVER_ERROR.getCode())
-                    .message(DATABASE_GENERAL_ERROR_MESSAGE)
-                    .build();
+            throw handleInternalServerErrorException(DATABASE_GENERAL_ERROR_MESSAGE);
         }
     }
 

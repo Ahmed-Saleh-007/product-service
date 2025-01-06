@@ -1,16 +1,14 @@
 package com.ejada.product.service.repository.facade;
 
-import com.ejada.product.service.exception.BusinessException;
-import com.ejada.product.service.exception.ErrorCodeEnum;
 import com.ejada.product.service.model.entity.Customer;
 import com.ejada.product.service.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static com.ejada.product.service.exception.CommonExceptionHandler.handleInternalServerErrorException;
 import static com.ejada.product.service.util.Constants.DATABASE_GENERAL_ERROR_MESSAGE;
 
 @Service
@@ -24,11 +22,7 @@ public class CustomerRepositoryFacade {
             return customerRepository.findById(id);
         } catch (Exception e) {
             log.error("Error occurred while finding customer by id CustomerRepositoryFacade: [{}]", id);
-            throw BusinessException.builder()
-                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .errorCode(ErrorCodeEnum.INTERNAL_SERVER_ERROR.getCode())
-                    .message(DATABASE_GENERAL_ERROR_MESSAGE)
-                    .build();
+            throw handleInternalServerErrorException(DATABASE_GENERAL_ERROR_MESSAGE);
         }
     }
 }

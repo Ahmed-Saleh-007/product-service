@@ -1,14 +1,12 @@
 package com.ejada.product.service.repository.facade;
 
-import com.ejada.product.service.exception.BusinessException;
-import com.ejada.product.service.exception.ErrorCodeEnum;
 import com.ejada.product.service.model.entity.Order;
 import com.ejada.product.service.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import static com.ejada.product.service.exception.CommonExceptionHandler.handleInternalServerErrorException;
 import static com.ejada.product.service.util.Constants.DATABASE_GENERAL_ERROR_MESSAGE;
 
 @Service
@@ -23,11 +21,7 @@ public class OrderRepositoryFacade {
             orderRepository.save(order);
         } catch (Exception e) {
             log.error("Error occurred while creating order OrderRepositoryFacade: [{}]",e.getMessage());
-            throw BusinessException.builder()
-                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .errorCode(ErrorCodeEnum.INTERNAL_SERVER_ERROR.getCode())
-                    .message(DATABASE_GENERAL_ERROR_MESSAGE)
-                    .build();
+            throw handleInternalServerErrorException(DATABASE_GENERAL_ERROR_MESSAGE);
         }
         return order;
     }

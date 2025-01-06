@@ -24,8 +24,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.ejada.product.service.exception.CommonExceptionHandler.handleBadRequestException;
+import static com.ejada.product.service.exception.CommonExceptionHandler.handleInternalServerErrorException;
 import static com.ejada.product.service.util.Constants.CUSTOMER_NOT_FOUND;
 import static com.ejada.product.service.util.Constants.INSUFFICIENT_STOCK;
+import static com.ejada.product.service.util.Constants.INTERNAL_SERVER_ERROR;
 import static com.ejada.product.service.util.Constants.PRODUCTS_NOT_FOUND;
 
 @Service
@@ -93,7 +95,7 @@ public class OrderService {
             Product product = products.stream()
                     .filter(p -> p.getId().equals(productDTO.getProductId()))
                     .findFirst()
-                    .orElseThrow(() -> new IllegalStateException("Unexpected product validation error."));
+                    .orElseThrow(() -> handleInternalServerErrorException(INTERNAL_SERVER_ERROR));
 
             // update stock
             product.setStockQuantity(product.getStockQuantity() - productDTO.getQuantity());

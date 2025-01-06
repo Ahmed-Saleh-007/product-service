@@ -13,4 +13,12 @@ public class CommonExceptionHandler {
                 .message(message)
                 .build();
     }
+    public static BusinessException handleInternalServerErrorException(String message)
+    {
+        return BusinessException.builder()
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                .errorCode(ErrorCodeEnum.INTERNAL_SERVER_ERROR.getCode())
+                .message(message)
+                .build();
+    }
 }
