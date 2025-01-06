@@ -24,5 +24,8 @@ public class Constants {
     public static final String PRODUCT_SOFT_DELETED_SUCCESSFULLY = "Product deleted successfully.";
     public static final String PRODUCT_NOT_FOUND_ERROR_MESSAGE = "Product not found with id: ";
     public static final String PRODUCT_IS_ALREADY_DELETED = "Product is already deleted.";
+    public static final String PRODUCTS_NOT_FOUND = "The following products do not exist: ";
+    public static final String CUSTOMER_NOT_FOUND = "Customer not found";
+    public static final String INSUFFICIENT_STOCK = "Insufficient stock for products: ";
 
 }
