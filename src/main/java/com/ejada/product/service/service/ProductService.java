@@ -25,7 +25,12 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static com.ejada.product.service.util.Constants.*;
+import static com.ejada.product.service.util.Constants.PRODUCT_NOT_FOUND_ERROR_MESSAGE;
+import static com.ejada.product.service.util.Constants.PRODUCT_IS_ALREADY_DELETED;
+import static com.ejada.product.service.util.Constants.INVALID_PRODUCT_PRICE_FILTER_ERROR_MESSAGE;
+import static com.ejada.product.service.util.Constants.SORT_ORDER_DESC;
+import static com.ejada.product.service.util.Constants.INVALID_CATEGORY_ERROR_MESSAGE;
+import static com.ejada.product.service.util.Constants.PRODUCT_ALREADY_EXISTS_ERROR_MESSAGE;
 
 @Service
 @Slf4j
