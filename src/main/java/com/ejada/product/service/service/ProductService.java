@@ -9,7 +9,6 @@ import com.ejada.product.service.model.entity.Product;
 import com.ejada.product.service.model.filter.ProductFilter;
 import com.ejada.product.service.model.mapper.ProductMapper;
 import com.ejada.product.service.model.response.ProductWithPagingResponse;
-import com.ejada.product.service.repository.CategoryRepository;
 import com.ejada.product.service.repository.ProductRepository;
 import com.ejada.product.service.repository.facade.CategoryRepositoryFacade;
 import com.ejada.product.service.repository.facade.ProductRepositoryFacade;
@@ -22,20 +21,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static com.ejada.product.service.util.Constants.INVALID_CATEGORY_ERROR_MESSAGE;
 import static com.ejada.product.service.util.Constants.INVALID_PRODUCT_PRICE_FILTER_ERROR_MESSAGE;
 import static com.ejada.product.service.util.Constants.PRODUCT_ALREADY_EXISTS_ERROR_MESSAGE;
+import static com.ejada.product.service.util.Constants.PRODUCT_IS_ALREADY_DELETED;
+import static com.ejada.product.service.util.Constants.PRODUCT_NOT_FOUND_ERROR_MESSAGE;
 import static com.ejada.product.service.util.Constants.SORT_ORDER_DESC;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class ProductService {
+
+    private final ProductRepository productRepository;
     private final ProductRepositoryFacade productRepositoryFacade;
     private final CategoryRepositoryFacade categoryRepositoryFacade;
-
     private final ProductMapper productMapper;
 
     public ProductWithPagingResponse getProducts(ProductFilter productFilter) {
@@ -66,6 +69,27 @@ public class ProductService {
                 .quantity(request.getQuantity())
                 .build();
     }
+
+    // Soft delete
+    public void softDeleteProduct(int productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> BusinessException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+                        .errorCode(ErrorCodeEnum.BAD_REQUEST.getCode())
+                        .message(PRODUCT_NOT_FOUND_ERROR_MESSAGE + productId)
+                        .build());
+
+        if (product.getDeletedAt() == null) {
+            product.setDeletedAt(LocalDateTime.now());
+            productRepository.save(product);
+        } else {
+
+            throw BusinessException.builder().httpStatus(HttpStatus.BAD_REQUEST)
+                    .errorCode(ErrorCodeEnum.BAD_REQUEST.getCode())
+                    .message(PRODUCT_IS_ALREADY_DELETED)
+                    .build();
+        }
+    }
+
 
     private void validateProductFilter(ProductFilter productFilter) {
         if (productFilter.getMinPrice() != null && productFilter.getMaxPrice() != null

@@ -7,8 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -27,5 +29,8 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
     Page<Product> findAllByCategoryAndPriceRange(ProductFilter productFilter, Pageable pageable);
 
     Optional<Product> findByName(String name);
+
+    @Query("SELECT p FROM Product p WHERE p.id IN :ids AND p.deletedAt IS NULL")
+    List<Product> findAllByIdExcludingDeleted(@Param("ids") List<Integer> ids);
 
 }

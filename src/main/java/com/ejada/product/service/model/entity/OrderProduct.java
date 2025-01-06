@@ -1,15 +1,14 @@
 package com.ejada.product.service.model.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.DecimalMin;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,7 +42,6 @@ public class OrderProduct {
     private Integer quantity;
 
     @Column(nullable = false)
-//    @DecimalMin(value = "0.0", inclusive = true, message = "Price must be greater than or equal to 0")
     private BigDecimal price;
 
     @Column(name = "created_at", nullable = false, updatable = false)
