@@ -11,6 +11,7 @@ import com.ejada.product.service.model.mapper.ProductMapper;
 import com.ejada.product.service.model.response.ProductWithPagingResponse;
 import com.ejada.product.service.repository.CategoryRepository;
 import com.ejada.product.service.repository.ProductRepository;
+import com.ejada.product.service.repository.facade.CategoryRepositoryFacade;
 import com.ejada.product.service.repository.facade.ProductRepositoryFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductRepositoryFacade productRepositoryFacade;
+    private final CategoryRepositoryFacade categoryRepositoryFacade;
 
     private final ProductMapper productMapper;
 
@@ -52,10 +54,10 @@ public class ProductService {
     }
 
     public CreateProductResponse createProduct(CreateProductRequest request) {
-        Optional<Product> existingProduct = productRepository.findByName(request.getName());
+        Optional<Product> existingProduct = productRepositoryFacade.findByName(request.getName());
         validateProductName(existingProduct);
         Product productEntity = ProductMapper.INSTANCE.mapToProductEntity(request);
-        Optional<Category> category = categoryRepository.findById(request.getCategoryId());
+        Optional<Category> category = categoryRepositoryFacade.findById(request.getCategoryId());
         validateCategory(category);
         productEntity.setCategory(category.get());
         productRepository.save(productEntity);
