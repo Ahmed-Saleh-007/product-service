@@ -80,7 +80,7 @@ public class ProductService {
 
         if (product.getDeletedAt() == null) {
             product.setDeletedAt(LocalDateTime.now());
-            productRepository.save(product);
+            productRepositoryFacade.updateProduct(product);
         } else {
 
             throw BusinessException.builder().httpStatus(HttpStatus.BAD_REQUEST)
