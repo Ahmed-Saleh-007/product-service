@@ -5,6 +5,7 @@ import com.ejada.product.service.exception.ErrorCodeEnum;
 import com.ejada.product.service.model.dto.OrdersResponse;
 import com.ejada.product.service.model.entity.Order;
 import com.ejada.product.service.model.filter.OrderFilter;
+import com.ejada.product.service.model.mapper.OrderMapper;
 import com.ejada.product.service.repository.facade.OrderRepositoryFacade;
 import com.ejada.product.service.model.dto.CreateOrderRequest;
 import com.ejada.product.service.model.dto.CreateOrderResponse;
@@ -57,7 +58,7 @@ public class OrderService {
                 getOrderPageRequest(orderFilter));
 
         return OrdersResponse.builder()
-                .orders(orders.getContent())
+                .orders(OrderMapper.INSTANCE.mapToListGetOrdersResponse(orders.getContent()))
                 .pageCount(orders.getTotalPages())
                 .totalCount(orders.getTotalElements())
                 .build();

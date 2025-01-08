@@ -17,7 +17,7 @@ import java.util.List;
 public class OrdersResponse {
     @Schema(description = "List of orders", name = "Orders")
     @JsonProperty("Orders")
-    private List<Order> orders;
+    private List<GetOrdersResponse> orders;
 
     @Schema(description = "Total count of products", name = "TotalCount")
     @JsonProperty("TotalCount")

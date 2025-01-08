@@ -67,7 +67,8 @@ public class OrderController {
                 .sortOrder(sortOrder)
                 .sortField(sortField)
                 .build();
-        return ResponseEntity.ok().body(orderService.getOrders(orderFilter));
+        OrdersResponse ordersResponse = orderService.getOrders(orderFilter);
+        return ResponseEntity.ok().body(ordersResponse);
     }
 
     @PostMapping
