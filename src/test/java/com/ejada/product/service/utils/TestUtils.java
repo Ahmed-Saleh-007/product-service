@@ -1,7 +1,7 @@
 package com.ejada.product.service.utils;
 
-import com.ejada.product.service.model.dto.CreateOrderRequest;
-import com.ejada.product.service.model.dto.OrderProductDto;
+import com.ejada.product.service.model.request.CreateOrderRequest;
+import com.ejada.product.service.model.request.OrderProductRequest;
 import com.ejada.product.service.model.entity.Customer;
 import com.ejada.product.service.model.entity.Product;
 
@@ -35,12 +35,12 @@ public class TestUtils {
 
     public static CreateOrderRequest buildOrderRequest()
     {
-        OrderProductDto orderProductDto = new OrderProductDto(1, 2);
-        List<OrderProductDto> orderProductDtos = List.of(orderProductDto);
+        OrderProductRequest orderProductRequest = new OrderProductRequest(1, 2);
+        List<OrderProductRequest> orderProductRequests = List.of(orderProductRequest);
 
         CreateOrderRequest createOrderRequest = new CreateOrderRequest();
         createOrderRequest.setCustomerId(CUSTOMER_ID);
-        createOrderRequest.setProducts(orderProductDtos);
+        createOrderRequest.setProducts(orderProductRequests);
 
         return createOrderRequest;
     }

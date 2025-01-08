@@ -1,9 +1,9 @@
 package com.ejada.product.service.service;
 
 import com.ejada.product.service.exception.BusinessException;
-import com.ejada.product.service.model.dto.CreateOrderRequest;
-import com.ejada.product.service.model.dto.CreateOrderResponse;
-import com.ejada.product.service.model.dto.OrderProductDto;
+import com.ejada.product.service.model.request.CreateOrderRequest;
+import com.ejada.product.service.model.response.CreateOrderResponse;
+import com.ejada.product.service.model.request.OrderProductRequest;
 import com.ejada.product.service.model.entity.Customer;
 import com.ejada.product.service.model.entity.Order;
 import com.ejada.product.service.model.entity.Product;
@@ -46,7 +46,6 @@ public class OrderServiceTest {
     private CreateOrderRequest createOrderRequest;
     private Customer customer;
     private Product product;
-    private List<OrderProductDto> orderProductDtos;
 
     @BeforeEach
     void setup() {

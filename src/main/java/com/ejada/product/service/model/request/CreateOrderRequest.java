@@ -1,5 +1,6 @@
-package com.ejada.product.service.model.dto;
+package com.ejada.product.service.model.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -19,11 +20,13 @@ import static com.ejada.product.service.util.Constants.MIN_PRODUCTS_IN_ORDER;
 @NoArgsConstructor
 public class CreateOrderRequest {
     @NotNull(message = CUSTOMER_REQUIRED)
+    @JsonProperty("CustomerId")
     private Integer customerId;
 
     @NotNull
     @Size(min = 1, message = MIN_PRODUCTS_IN_ORDER)
     @Valid
-    private List<OrderProductDto> products;
+    @JsonProperty("Products")
+    private List<OrderProductRequest> products;
 
 }
