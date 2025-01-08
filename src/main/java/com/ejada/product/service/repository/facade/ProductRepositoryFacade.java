@@ -32,6 +32,16 @@ public class ProductRepositoryFacade {
         }
     }
 
+    public void save(Product product) {
+        try {
+            productRepository.save(product);
+        } catch (Exception e) {
+            log.error("Error occurred while saving product ProductRepositoryFacade: [{}]", product.toString());
+            throw handleInternalServerErrorException(DATABASE_GENERAL_ERROR_MESSAGE);
+        }
+
+    }
+
     public Optional<Product> findByName(String name) {
         log.info("Find product by name ProductRepositoryFacade: [{}]", name);
         try {
@@ -47,10 +57,11 @@ public class ProductRepositoryFacade {
         try {
             return productRepository.findAllByIdExcludingDeleted(ids);
         } catch (Exception e) {
-            log.error("Error occurred while finding product by name ProductRepositoryFacade: [{}]", e.getMessage());
+            log.error("Error occurred while finding products by certain ids ProductRepositoryFacade: [{}]", ids);
             throw handleInternalServerErrorException(DATABASE_GENERAL_ERROR_MESSAGE);
         }
     }
+
     public Optional<Product> findProductById(int id) {
         log.info("Find product by certain id ProductRepositoryFacade: [{}]", id);
         try {
@@ -64,9 +75,9 @@ public class ProductRepositoryFacade {
     public void updateProduct(Product product) {
         log.info("update product ProductRepositoryFacade: [{}]", product.getId());
         try {
-             productRepository.save(product);
+            productRepository.save(product);
         } catch (Exception e) {
-            log.error("Error occurred while updating product with id [{}] ProductRepositoryFacade: [{}]", product.getId(),e.getMessage());
+            log.error("Error occurred while updating product with id [{}] ProductRepositoryFacade: [{}]", product.getId(), e.getMessage());
             throw handleInternalServerErrorException(DATABASE_GENERAL_ERROR_MESSAGE);
         }
     }

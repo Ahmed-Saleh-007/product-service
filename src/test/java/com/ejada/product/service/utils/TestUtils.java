@@ -1,10 +1,14 @@
 package com.ejada.product.service.utils;
 
-import com.ejada.product.service.model.dto.CreateOrderRequest;
-import com.ejada.product.service.model.dto.OrderProductDto;
+import com.ejada.product.service.model.entity.Promotion;
+import com.ejada.product.service.model.enums.DiscountTypeEnum;
+import com.ejada.product.service.model.request.CreateOrderRequest;
+import com.ejada.product.service.model.request.CreateProductRequest;
+import com.ejada.product.service.model.request.OrderProductRequest;
 import com.ejada.product.service.model.entity.Customer;
 import com.ejada.product.service.model.entity.Product;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.ejada.product.service.utils.TestConstants.CUSTOMER_ID;
@@ -33,15 +37,43 @@ public class TestUtils {
         return customer;
     }
 
+    public static Promotion buildPrecentagePromotion() {
+        return Promotion.builder()
+                .id(1)
+                .code("PROMO2025")
+                .discountType(DiscountTypeEnum.PERCENTAGE)
+                .discountValue(BigDecimal.valueOf(10.00))
+                .build();
+    }
+
+    public static Promotion buildAmountPromotion() {
+        return Promotion.builder()
+                .id(2)
+                .code("PROMO500")
+                .discountType(DiscountTypeEnum.FLAT_AMOUNT)
+                .discountValue(BigDecimal.valueOf(500.00))
+                .build();
+    }
+
     public static CreateOrderRequest buildOrderRequest()
     {
-        OrderProductDto orderProductDto = new OrderProductDto(1, 2);
-        List<OrderProductDto> orderProductDtos = List.of(orderProductDto);
+        OrderProductRequest orderProductRequest = new OrderProductRequest(1, 2);
+        List<OrderProductRequest> orderProductRequests = List.of(orderProductRequest);
 
         CreateOrderRequest createOrderRequest = new CreateOrderRequest();
         createOrderRequest.setCustomerId(CUSTOMER_ID);
-        createOrderRequest.setProducts(orderProductDtos);
+        createOrderRequest.setProducts(orderProductRequests);
 
         return createOrderRequest;
+    }
+
+    public static CreateProductRequest buildCreateProductRequest() {
+        return CreateProductRequest.builder()
+                .name("Test Product")
+                .price(BigDecimal.valueOf(1.99))
+                .description("")
+                .categoryId(1)
+                .quantity(5)
+                .build();
     }
 }
