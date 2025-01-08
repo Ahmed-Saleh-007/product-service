@@ -56,9 +56,7 @@ public class OrderRepositoryFacadeTest {
     @Test
     void createOrder_exception() {
         Mockito.when(orderRepository.save(order)).thenThrow(new RuntimeException(DATABASE_GENERAL_ERROR_MESSAGE));
-        Assertions.assertThrows(BusinessException.class, () -> {
-            orderRepositoryFacade.createOrder(order);
-        });
+        assertThrows(BusinessException.class, () -> orderRepositoryFacade.createOrder(order));
         Mockito.verify(orderRepository).save(order);
     }
 
