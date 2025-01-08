@@ -38,5 +38,5 @@ public class GetOrdersResponse {
     private LocalDateTime createdAt;
 
     @JsonProperty("Order Products")
-    private List<GetOrdersOrderProductDto> orderProducts;
+    private List<GetOrdersOrderProductResponse> orderProducts;
 }

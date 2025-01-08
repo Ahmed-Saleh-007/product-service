@@ -1,5 +1,6 @@
 package com.ejada.product.service.service;
 
+import com.ejada.product.service.exception.CommonExceptionHandler;
 import com.ejada.product.service.model.request.CreateOrderRequest;
 import com.ejada.product.service.model.response.CreateOrderResponse;
 import com.ejada.product.service.model.request.OrderProductRequest;
@@ -154,11 +155,7 @@ public class OrderService {
     private void validateOrderFilter(OrderFilter orderFilter) {
         if(orderFilter.getCreatedAtEnd() != null && orderFilter.getCreatedAtStart() != null &&
         orderFilter.getCreatedAtEnd().isBefore(orderFilter.getCreatedAtStart())){
-            throw BusinessException.builder()
-                    .httpStatus(HttpStatus.BAD_REQUEST)
-                    .errorCode(ErrorCodeEnum.BAD_REQUEST.getCode())
-                    .message(INVALID_DATES_FILTER_ERROR_MESSAGE)
-                    .build();
+            throw CommonExceptionHandler.handleBadRequestException(INVALID_DATES_FILTER_ERROR_MESSAGE);
         }
     }
 

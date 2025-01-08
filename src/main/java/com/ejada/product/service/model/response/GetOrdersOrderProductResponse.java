@@ -20,7 +20,7 @@ import static com.ejada.product.service.util.Constants.PRODUCT_REQUIRED;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetOrdersOrderProductDto {
+public class GetOrdersOrderProductResponse {
     @NotNull(message = PRODUCT_REQUIRED)
     private Integer productId;
 
