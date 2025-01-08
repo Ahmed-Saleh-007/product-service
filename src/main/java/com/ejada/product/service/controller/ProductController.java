@@ -1,8 +1,8 @@
 package com.ejada.product.service.controller;
 
 import com.ejada.product.service.exception.ApiBusinessErrorResponse;
-import com.ejada.product.service.model.dto.CreateProductRequest;
-import com.ejada.product.service.model.dto.CreateProductResponse;
+import com.ejada.product.service.model.request.CreateProductRequest;
+import com.ejada.product.service.model.response.CreateProductResponse;
 import com.ejada.product.service.model.filter.ProductFilter;
 import com.ejada.product.service.model.response.ProductWithPagingResponse;
 import com.ejada.product.service.service.ProductService;

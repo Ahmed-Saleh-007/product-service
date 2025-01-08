@@ -2,8 +2,8 @@ package com.ejada.product.service.service;
 
 import com.ejada.product.service.exception.BusinessException;
 import com.ejada.product.service.exception.ErrorCodeEnum;
-import com.ejada.product.service.model.dto.CreateProductRequest;
-import com.ejada.product.service.model.dto.CreateProductResponse;
+import com.ejada.product.service.model.request.CreateProductRequest;
+import com.ejada.product.service.model.response.CreateProductResponse;
 import com.ejada.product.service.model.entity.Category;
 import com.ejada.product.service.model.entity.Product;
 import com.ejada.product.service.model.filter.ProductFilter;

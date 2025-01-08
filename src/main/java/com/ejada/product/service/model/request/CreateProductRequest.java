@@ -1,6 +1,5 @@
-package com.ejada.product.service.model.dto;
+package com.ejada.product.service.model.request;
 
-import com.ejada.product.service.model.entity.Category;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;

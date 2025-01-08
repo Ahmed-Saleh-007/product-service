@@ -1,6 +1,6 @@
 package com.ejada.product.service.model.mapper;
 
-import com.ejada.product.service.model.dto.CreateProductRequest;
+import com.ejada.product.service.model.request.CreateProductRequest;
 import com.ejada.product.service.model.entity.Product;
 import com.ejada.product.service.model.response.ProductResponse;
 import org.mapstruct.Mapper;
