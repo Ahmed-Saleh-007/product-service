@@ -27,6 +27,7 @@ public class Constants {
     public static final String PRODUCT_IS_ALREADY_DELETED = "Product is already deleted.";
     public static final String PRODUCTS_NOT_FOUND = "The following products do not exist: ";
     public static final String CUSTOMER_NOT_FOUND = "Customer not found";
+    public static final String ACTIVE_PROMOTION_NOT_FOUND = "Active promotion not found";
     public static final String INSUFFICIENT_STOCK = "Insufficient stock for products: ";
     public static final String INTERNAL_SERVER_ERROR = "Unexpected error occurred.";
     public static final String CUSTOMER_REQUIRED = "Customer ID is required.";
