@@ -24,6 +24,7 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static com.ejada.product.service.exception.CommonExceptionHandler.handleInternalServerErrorException;
 import static com.ejada.product.service.util.Constants.INVALID_CATEGORY_ERROR_MESSAGE;
 import static com.ejada.product.service.util.Constants.INVALID_PRODUCT_PRICE_FILTER_ERROR_MESSAGE;
 import static com.ejada.product.service.util.Constants.PRODUCT_ALREADY_EXISTS_ERROR_MESSAGE;
@@ -73,20 +74,14 @@ public class ProductService {
     // Soft delete
     public void softDeleteProduct(int productId) {
         Product product = productRepositoryFacade.findProductById(productId)
-                .orElseThrow(() -> BusinessException.builder().httpStatus(HttpStatus.BAD_REQUEST)
-                        .errorCode(ErrorCodeEnum.BAD_REQUEST.getCode())
-                        .message(PRODUCT_NOT_FOUND_ERROR_MESSAGE + productId)
-                        .build());
+                .orElseThrow(() -> handleInternalServerErrorException(PRODUCT_NOT_FOUND_ERROR_MESSAGE + productId));
 
         if (product.getDeletedAt() == null) {
             product.setDeletedAt(LocalDateTime.now());
             productRepositoryFacade.updateProduct(product);
         } else {
 
-            throw BusinessException.builder().httpStatus(HttpStatus.BAD_REQUEST)
-                    .errorCode(ErrorCodeEnum.BAD_REQUEST.getCode())
-                    .message(PRODUCT_IS_ALREADY_DELETED)
-                    .build();
+            throw handleInternalServerErrorException(PRODUCT_IS_ALREADY_DELETED);
         }
     }
 

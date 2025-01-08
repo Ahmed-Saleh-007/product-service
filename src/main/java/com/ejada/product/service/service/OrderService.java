@@ -2,7 +2,9 @@ package com.ejada.product.service.service;
 
 import com.ejada.product.service.model.dto.CreateOrderRequest;
 import com.ejada.product.service.model.dto.CreateOrderResponse;
+import com.ejada.product.service.model.dto.OrderHistoryDTO;
 import com.ejada.product.service.model.dto.OrderProductDto;
+import com.ejada.product.service.model.dto.ProductDetailsDTO;
 import com.ejada.product.service.model.entity.Customer;
 import com.ejada.product.service.model.entity.Order;
 import com.ejada.product.service.model.entity.OrderProduct;
@@ -11,9 +13,16 @@ import com.ejada.product.service.repository.facade.CustomerRepositoryFacade;
 import com.ejada.product.service.repository.facade.OrderRepositoryFacade;
 import com.ejada.product.service.repository.facade.ProductRepositoryFacade;
 import jakarta.transaction.Transactional;
+import java.sql.Timestamp;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.flywaydb.core.internal.jdbc.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import com.ejada.product.service.repository.OrderRepository;
+
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -28,6 +37,7 @@ import static com.ejada.product.service.exception.CommonExceptionHandler.handleI
 import static com.ejada.product.service.util.Constants.CUSTOMER_NOT_FOUND;
 import static com.ejada.product.service.util.Constants.INSUFFICIENT_STOCK;
 import static com.ejada.product.service.util.Constants.INTERNAL_SERVER_ERROR;
+import static com.ejada.product.service.util.Constants.NO_ORDER_HISTORY_FOUND;
 import static com.ejada.product.service.util.Constants.PRODUCTS_NOT_FOUND;
 
 @Service
@@ -37,6 +47,47 @@ public class OrderService {
     private final ProductRepositoryFacade productRepositoryFacade;
     private final OrderRepositoryFacade orderRepositoryFacade;
     private final CustomerRepositoryFacade customerRepositoryFacade;
+    private final OrderRepository orderRepository;
+
+    public List<OrderHistoryDTO> getOrderHistoryByCustomerId(int customerId) {
+
+
+        List<Map<String, Object>> rows = orderRepository.findOrderHistoryByCustomerId(customerId);
+
+        if (rows == null || rows.isEmpty()) {
+            throw handleBadRequestException(NO_ORDER_HISTORY_FOUND + customerId);
+        }
+        
+        Map<Integer, OrderHistoryDTO> orderMap = new HashMap<>();
+        for (Map<String, Object> row : rows) {
+            int orderId = (int) row.get("order_id");
+
+            OrderHistoryDTO orderDTO = orderMap.computeIfAbsent(orderId, id -> {
+                OrderHistoryDTO orderHistory = new OrderHistoryDTO();
+                orderHistory.setOrderId(orderId);
+                orderHistory.setCustomerName((String) row.get("customer_name"));
+                orderHistory.setOrderDate(((Timestamp) row.get("order_date")).toLocalDateTime());
+                orderHistory.setCustomerId((int) row.get("customer_id"));
+                orderHistory.setOrderStatus((String) row.get("order_status"));
+                orderHistory.setTotalCost(((BigDecimal) row.get("total_cost")).doubleValue());
+                orderHistory.setProductDetails(new ArrayList<>());
+                return orderHistory;
+            });
+
+            // Map product details
+            ProductDetailsDTO productDetail = new ProductDetailsDTO();
+            productDetail.setProductName((String) row.get("product_name"));
+            productDetail.setQuantity((Integer) row.get("product_quantity"));
+            productDetail.setPrice(((BigDecimal) row.get("product_price")).doubleValue());
+            productDetail.setSubtotal(((BigDecimal) row.get("subtotal")).doubleValue());
+            productDetail.setCategoryName((String) row.get("category_name"));
+
+
+            orderDTO.getProductDetails().add(productDetail);
+        }
+
+        return new ArrayList<>(orderMap.values());
+    }
 
     @Transactional
     public CreateOrderResponse createOrder(CreateOrderRequest request) {

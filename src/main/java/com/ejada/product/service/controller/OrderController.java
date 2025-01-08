@@ -3,6 +3,7 @@ package com.ejada.product.service.controller;
 import com.ejada.product.service.exception.ApiBusinessErrorResponse;
 import com.ejada.product.service.model.dto.CreateOrderRequest;
 import com.ejada.product.service.model.dto.CreateOrderResponse;
+import com.ejada.product.service.model.dto.OrderHistoryDTO;
 import com.ejada.product.service.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,4 +67,10 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.createOrder(request));
 
     }
+    @GetMapping("/{customerId}")
+    public ResponseEntity<List<OrderHistoryDTO>> getOrderHistoryByCustomerId(@PathVariable int customerId) {
+        List<OrderHistoryDTO> orderHistory = orderService.getOrderHistoryByCustomerId(customerId);
+        return ResponseEntity.ok(orderHistory);
+    }
+
 }
