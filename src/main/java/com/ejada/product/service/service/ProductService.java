@@ -72,7 +72,7 @@ public class ProductService {
 
     // Soft delete
     public void softDeleteProduct(int productId) {
-        Product product = productRepository.findById(productId)
+        Product product = productRepositoryFacade.findProductById(productId)
                 .orElseThrow(() -> BusinessException.builder().httpStatus(HttpStatus.BAD_REQUEST)
                         .errorCode(ErrorCodeEnum.BAD_REQUEST.getCode())
                         .message(PRODUCT_NOT_FOUND_ERROR_MESSAGE + productId)
