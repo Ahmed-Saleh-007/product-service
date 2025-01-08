@@ -24,6 +24,7 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static com.ejada.product.service.exception.CommonExceptionHandler.handleBadRequestException;
 import static com.ejada.product.service.util.Constants.INVALID_CATEGORY_ERROR_MESSAGE;
 import static com.ejada.product.service.util.Constants.INVALID_PRODUCT_PRICE_FILTER_ERROR_MESSAGE;
 import static com.ejada.product.service.util.Constants.PRODUCT_ALREADY_EXISTS_ERROR_MESSAGE;
@@ -90,15 +91,10 @@ public class ProductService {
         }
     }
 
-
     private void validateProductFilter(ProductFilter productFilter) {
         if (productFilter.getMinPrice() != null && productFilter.getMaxPrice() != null
                 && productFilter.getMinPrice() > productFilter.getMaxPrice()) {
-            throw BusinessException.builder()
-                    .httpStatus(HttpStatus.BAD_REQUEST)
-                    .errorCode(ErrorCodeEnum.BAD_REQUEST.getCode())
-                    .message(INVALID_PRODUCT_PRICE_FILTER_ERROR_MESSAGE)
-                    .build();
+            throw handleBadRequestException(INVALID_PRODUCT_PRICE_FILTER_ERROR_MESSAGE);
         }
     }
 

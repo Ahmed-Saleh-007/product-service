@@ -19,6 +19,7 @@ import static com.ejada.product.service.util.Constants.MIN_PRODUCTS_IN_ORDER;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateOrderRequest {
+
     @NotNull(message = CUSTOMER_REQUIRED)
     @JsonProperty("CustomerId")
     private Integer customerId;
@@ -28,5 +29,8 @@ public class CreateOrderRequest {
     @Valid
     @JsonProperty("Products")
     private List<OrderProductRequest> products;
+
+    @JsonProperty("PromotionCode")
+    private String promotionCode;
 
 }

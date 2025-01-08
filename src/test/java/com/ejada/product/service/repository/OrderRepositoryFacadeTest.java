@@ -2,6 +2,7 @@ package com.ejada.product.service.repository;
 
 import com.ejada.product.service.exception.BusinessException;
 import com.ejada.product.service.model.entity.Order;
+import com.ejada.product.service.model.filter.OrderFilter;
 import com.ejada.product.service.repository.facade.OrderRepositoryFacade;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,10 +11,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 
 import static com.ejada.product.service.util.Constants.DATABASE_GENERAL_ERROR_MESSAGE;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class OrderRepositoryFacadeTest {
@@ -52,4 +61,28 @@ public class OrderRepositoryFacadeTest {
         });
         Mockito.verify(orderRepository).save(order);
     }
+
+    @Test
+    void testFindAllByCustomerIdAndCreationDateSuccess() {
+        when(orderRepository.findAllByCustomerIdAndCreationDate(any(), any()))
+                .thenReturn(Page.empty());
+        assertDoesNotThrow(() -> orderRepositoryFacade.findAllByCustomerIdAndCreationDate(
+                OrderFilter.builder().build(),
+                PageRequest.of(0, 10)));
+    }
+
+    @Test
+    void testFindAllByCustomerIdAndCreationDateFailsWithSqlException() {
+        doAnswer(
+                invocation -> {
+                    throw new SQLException("");
+                })
+                .when(orderRepository)
+                .findAllByCustomerIdAndCreationDate(any(), any());
+        assertThrows(BusinessException.class, () ->
+                orderRepositoryFacade.findAllByCustomerIdAndCreationDate(
+                        OrderFilter.builder().build(),
+                        PageRequest.of(0, 10)));
+    }
+
 }
