@@ -1,13 +1,16 @@
 package com.ejada.product.service.controller;
-
+import com.ejada.product.service.model.response.OrdersResponse;
+import com.ejada.product.service.model.filter.OrderFilter;
 import com.ejada.product.service.exception.ApiBusinessErrorResponse;
 import com.ejada.product.service.model.request.CreateOrderRequest;
 import com.ejada.product.service.model.response.CreateOrderResponse;
 import com.ejada.product.service.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,10 +20,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDateTime;
+
 
 @RestController
 @Validated
@@ -42,8 +46,28 @@ public class OrderController {
     @ApiResponse(responseCode = "429", description = "Too Many Requests")
     @ApiResponse(responseCode = "500", description = "Internal Server Error")
     @ApiResponse(responseCode = "502", description = "Bad Gateway")
-    public ResponseEntity<List<Objects>> getOrders() {
-        return ResponseEntity.ok().body(orderService.getOrders());
+    public ResponseEntity<OrdersResponse> getOrders(
+            @Parameter(description = "Customer ID") @RequestParam(required = false) Integer customerId,
+            @Parameter(description = "Min Total Amount") @RequestParam(required = false) LocalDateTime createdAtStart,
+            @Parameter(description = "Max Total Amount") @RequestParam(required = false) LocalDateTime createdAtEnd,
+            @Parameter(description = "Order Status") @RequestParam(required = false) String status,
+            @Parameter(description = "Page Index") @RequestParam(defaultValue = "0") @Min(0) int pageIndex,
+            @Parameter(description = "Page Size") @RequestParam(defaultValue = "10") @Min(1) int pageSize,
+            @Parameter(description = "Sort Order") @RequestParam(required = false) String sortOrder,
+            @Parameter(description = "Sort Field") @RequestParam(required = false) String sortField
+            ) {
+        OrderFilter orderFilter = OrderFilter.builder()
+                .customerId(customerId)
+                .createdAtStart(createdAtStart)
+                .createdAtEnd(createdAtEnd)
+                .status(status)
+                .pageIndex(pageIndex)
+                .pageSize(pageSize)
+                .sortOrder(sortOrder)
+                .sortField(sortField)
+                .build();
+        OrdersResponse ordersResponse = orderService.getOrders(orderFilter);
+        return ResponseEntity.ok().body(ordersResponse);
     }
 
     @PostMapping

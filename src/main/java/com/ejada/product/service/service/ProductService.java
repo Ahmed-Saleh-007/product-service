@@ -60,7 +60,7 @@ public class ProductService {
         Optional<Category> category = categoryRepositoryFacade.findById(request.getCategoryId());
         validateCategory(category);
         productEntity.setCategory(category.get());
-        productRepository.save(productEntity);
+        productRepositoryFacade.save(productEntity);
         return CreateProductResponse.builder()
                 .name(request.getName())
                 .price(request.getPrice())
@@ -114,7 +114,7 @@ public class ProductService {
     }
 
     private void validateCategory(Optional<Category> category) {
-        if (category.isEmpty()) {
+        if(category.isEmpty()) {
             throw BusinessException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
                     .errorCode(ErrorCodeEnum.BAD_REQUEST.getCode())
@@ -124,7 +124,7 @@ public class ProductService {
     }
 
     private void validateProductName(Optional<Product> product) {
-        if (product.isPresent()) {
+        if(product.isPresent()){
             throw BusinessException.builder()
                     .httpStatus(HttpStatus.BAD_REQUEST)
                     .errorCode(ErrorCodeEnum.BAD_REQUEST.getCode())

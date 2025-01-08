@@ -1,8 +1,16 @@
 package com.ejada.product.service.service;
 
+import com.ejada.product.service.exception.CommonExceptionHandler;
 import com.ejada.product.service.model.request.CreateOrderRequest;
 import com.ejada.product.service.model.response.CreateOrderResponse;
 import com.ejada.product.service.model.request.OrderProductRequest;
+import com.ejada.product.service.exception.BusinessException;
+import com.ejada.product.service.exception.ErrorCodeEnum;
+import com.ejada.product.service.model.entity.Order;
+import com.ejada.product.service.model.filter.OrderFilter;
+import com.ejada.product.service.model.mapper.OrderMapper;
+import com.ejada.product.service.model.response.OrdersResponse;
+import com.ejada.product.service.repository.facade.OrderRepositoryFacade;
 import com.ejada.product.service.model.entity.Customer;
 import com.ejada.product.service.model.entity.Order;
 import com.ejada.product.service.model.entity.OrderProduct;
@@ -13,8 +21,15 @@ import com.ejada.product.service.repository.facade.ProductRepositoryFacade;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import static com.ejada.product.service.util.Constants.INVALID_DATES_FILTER_ERROR_MESSAGE;
+import static com.ejada.product.service.util.Constants.SORT_ORDER_DESC;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +49,21 @@ import static com.ejada.product.service.util.Constants.PRODUCTS_NOT_FOUND;
 @Slf4j
 @RequiredArgsConstructor
 public class OrderService {
-    private final ProductRepositoryFacade productRepositoryFacade;
     private final OrderRepositoryFacade orderRepositoryFacade;
+    private final ProductRepositoryFacade productRepositoryFacade;
     private final CustomerRepositoryFacade customerRepositoryFacade;
+    public OrdersResponse getOrders(OrderFilter orderFilter) {
+        log.info("Get orders by filter: [{}]", orderFilter.toString());
+        validateOrderFilter(orderFilter);
+        Page<Order> orders = orderRepositoryFacade.findAllByCustomerIdAndCreationDate(orderFilter,
+                getOrderPageRequest(orderFilter));
+
+        return OrdersResponse.builder()
+                .orders(OrderMapper.INSTANCE.mapToListGetOrdersResponse(orders.getContent()))
+                .pageCount(orders.getTotalPages())
+                .totalCount(orders.getTotalElements())
+                .build();
+    }
 
     @Transactional
     public CreateOrderResponse createOrder(CreateOrderRequest request) {
@@ -125,9 +152,22 @@ public class OrderService {
         return orderRepositoryFacade.createOrder(order);
     }
 
-    public List<Objects> getOrders() {
-        log.info("Get Orders");
-        return List.of();
+    private void validateOrderFilter(OrderFilter orderFilter) {
+        if(orderFilter.getCreatedAtEnd() != null && orderFilter.getCreatedAtStart() != null &&
+        orderFilter.getCreatedAtEnd().isBefore(orderFilter.getCreatedAtStart())){
+            throw CommonExceptionHandler.handleBadRequestException(INVALID_DATES_FILTER_ERROR_MESSAGE);
+        }
+    }
+
+    private PageRequest getOrderPageRequest(OrderFilter orderFilter) {
+        if (StringUtils.hasText(orderFilter.getSortField())) {
+            Sort sort = SORT_ORDER_DESC.equalsIgnoreCase(orderFilter.getSortOrder())
+                    ? Sort.by(orderFilter.getSortField()).descending()
+                    : Sort.by(orderFilter.getSortField()).ascending();
+            return PageRequest.of(orderFilter.getPageIndex(), orderFilter.getPageSize(), sort);
+        } else {
+            return PageRequest.of(orderFilter.getPageIndex(), orderFilter.getPageSize());
+        }
     }
 
 }
