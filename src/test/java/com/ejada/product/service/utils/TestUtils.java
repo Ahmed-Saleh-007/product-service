@@ -1,10 +1,12 @@
 package com.ejada.product.service.utils;
 
 import com.ejada.product.service.model.request.CreateOrderRequest;
+import com.ejada.product.service.model.request.CreateProductRequest;
 import com.ejada.product.service.model.request.OrderProductRequest;
 import com.ejada.product.service.model.entity.Customer;
 import com.ejada.product.service.model.entity.Product;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.ejada.product.service.utils.TestConstants.CUSTOMER_ID;
@@ -43,5 +45,15 @@ public class TestUtils {
         createOrderRequest.setProducts(orderProductRequests);
 
         return createOrderRequest;
+    }
+
+    public static CreateProductRequest buildCreateProductRequest() {
+        return CreateProductRequest.builder()
+                .name("Test Product")
+                .price(BigDecimal.valueOf(1.99))
+                .description("")
+                .categoryId(1)
+                .quantity(5)
+                .build();
     }
 }

@@ -15,7 +15,7 @@ public interface OrderRepository extends CrudRepository<Order, Integer> {
     @EntityGraph(attributePaths = {"customer"})
     @Query("""
             SELECT order FROM Order order
-            WHERE (:#{#orderFilter.customerId == null || #orderFilter.customerId.isEmpty()} IS TRUE
+            WHERE (:#{#orderFilter.customerId == null} IS TRUE
             OR order.customer.id IN :#{#orderFilter.customerId})
             AND (:#{#orderFilter.createdAtStart} IS NULL OR order.createdAt >= :#{#orderFilter.createdAtStart})
             AND (:#{#orderFilter.createdAtEnd} IS NULL OR order.createdAt <= :#{#orderFilter.createdAtEnd})

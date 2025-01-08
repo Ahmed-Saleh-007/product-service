@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 
 @RestController
@@ -48,8 +48,8 @@ public class OrderController {
     @ApiResponse(responseCode = "502", description = "Bad Gateway")
     public ResponseEntity<OrdersResponse> getOrders(
             @Parameter(description = "Customer ID") @RequestParam(required = false) Integer customerId,
-            @Parameter(description = "Min Total Amount") @RequestParam(required = false) LocalDateTime createdAtStart,
-            @Parameter(description = "Max Total Amount") @RequestParam(required = false) LocalDateTime createdAtEnd,
+            @Parameter(description = "Min Total Amount") @RequestParam(required = false) LocalDate createdAtStart,
+            @Parameter(description = "Max Total Amount") @RequestParam(required = false) LocalDate createdAtEnd,
             @Parameter(description = "Order Status") @RequestParam(required = false) String status,
             @Parameter(description = "Page Index") @RequestParam(defaultValue = "0") @Min(0) int pageIndex,
             @Parameter(description = "Page Size") @RequestParam(defaultValue = "10") @Min(1) int pageSize,
@@ -58,8 +58,8 @@ public class OrderController {
             ) {
         OrderFilter orderFilter = OrderFilter.builder()
                 .customerId(customerId)
-                .createdAtStart(createdAtStart)
-                .createdAtEnd(createdAtEnd)
+                .createdAtStart(createdAtStart != null ? createdAtStart.atStartOfDay() : null)
+                .createdAtEnd(createdAtEnd != null ? createdAtEnd.atStartOfDay() : null)
                 .status(status)
                 .pageIndex(pageIndex)
                 .pageSize(pageSize)
