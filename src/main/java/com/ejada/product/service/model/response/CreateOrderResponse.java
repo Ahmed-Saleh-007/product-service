@@ -1,5 +1,6 @@
-package com.ejada.product.service.model.dto;
+package com.ejada.product.service.model.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateOrderResponse {
+    @JsonProperty("OrderId")
     private Integer orderId;
+    @JsonProperty("TotalAmount")
     private BigDecimal totalAmount;
+    @JsonProperty("Status")
     private String status;
 }

@@ -1,10 +1,9 @@
 package com.ejada.product.service.model.mapper;
 
-import com.ejada.product.service.model.dto.GetOrdersOrderProductDto;
-import com.ejada.product.service.model.dto.GetOrdersResponse;
-import com.ejada.product.service.model.dto.OrderProductDto;
 import com.ejada.product.service.model.entity.Order;
 import com.ejada.product.service.model.entity.OrderProduct;
+import com.ejada.product.service.model.response.GetOrdersOrderProductDto;
+import com.ejada.product.service.model.response.GetOrdersResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

@@ -1,10 +1,9 @@
 package com.ejada.product.service.controller;
-
-import com.ejada.product.service.model.dto.OrdersResponse;
+import com.ejada.product.service.model.response.OrdersResponse;
 import com.ejada.product.service.model.filter.OrderFilter;
 import com.ejada.product.service.exception.ApiBusinessErrorResponse;
-import com.ejada.product.service.model.dto.CreateOrderRequest;
-import com.ejada.product.service.model.dto.CreateOrderResponse;
+import com.ejada.product.service.model.request.CreateOrderRequest;
+import com.ejada.product.service.model.response.CreateOrderResponse;
 import com.ejada.product.service.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

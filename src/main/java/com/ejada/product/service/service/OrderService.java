@@ -1,15 +1,15 @@
 package com.ejada.product.service.service;
 
+import com.ejada.product.service.model.request.CreateOrderRequest;
+import com.ejada.product.service.model.response.CreateOrderResponse;
+import com.ejada.product.service.model.request.OrderProductRequest;
 import com.ejada.product.service.exception.BusinessException;
 import com.ejada.product.service.exception.ErrorCodeEnum;
-import com.ejada.product.service.model.dto.OrdersResponse;
 import com.ejada.product.service.model.entity.Order;
 import com.ejada.product.service.model.filter.OrderFilter;
 import com.ejada.product.service.model.mapper.OrderMapper;
+import com.ejada.product.service.model.response.OrdersResponse;
 import com.ejada.product.service.repository.facade.OrderRepositoryFacade;
-import com.ejada.product.service.model.dto.CreateOrderRequest;
-import com.ejada.product.service.model.dto.CreateOrderResponse;
-import com.ejada.product.service.model.dto.OrderProductDto;
 import com.ejada.product.service.model.entity.Customer;
 import com.ejada.product.service.model.entity.Order;
 import com.ejada.product.service.model.entity.OrderProduct;
@@ -83,9 +83,9 @@ public class OrderService {
         );
     }
 
-    private List<Product> validateAllProductsInOrder(List<OrderProductDto> orderProductDtos) {
-        List<Integer> productIds = orderProductDtos.stream()
-                .map(OrderProductDto::getProductId)
+    private List<Product> validateAllProductsInOrder(List<OrderProductRequest> orderProductRequests) {
+        List<Integer> productIds = orderProductRequests.stream()
+                .map(OrderProductRequest::getProductId)
                 .toList();
 
         List<Product> products = productRepositoryFacade.findAllById(productIds);
@@ -96,7 +96,7 @@ public class OrderService {
         List<Integer> nonExistentProducts = new ArrayList<>();
         List<Integer> outOfStockProducts = new ArrayList<>();
 
-        orderProductDtos.forEach(dto -> {
+        orderProductRequests.forEach(dto -> {
             Product product = productMap.get(dto.getProductId());
             if (product == null) {
                 nonExistentProducts.add(dto.getProductId());
@@ -114,10 +114,10 @@ public class OrderService {
 
         return products;
     }
-    private List<OrderProduct> prepareOrderProducts(List<OrderProductDto> orderProductDtos, List<Product> products) {
+    private List<OrderProduct> prepareOrderProducts(List<OrderProductRequest> orderProductRequests, List<Product> products) {
         List<OrderProduct> orderProducts = new ArrayList<>();
 
-        for (OrderProductDto productDTO : orderProductDtos) {
+        for (OrderProductRequest productDTO : orderProductRequests) {
             Product product = products.stream()
                     .filter(p -> p.getId().equals(productDTO.getProductId()))
                     .findFirst()

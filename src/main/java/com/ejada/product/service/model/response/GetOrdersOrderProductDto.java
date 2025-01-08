@@ -1,4 +1,4 @@
-package com.ejada.product.service.model.dto;
+package com.ejada.product.service.model.response;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

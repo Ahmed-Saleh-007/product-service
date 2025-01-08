@@ -68,6 +68,15 @@ public class ProductRepositoryFacade {
             throw handleInternalServerErrorException(DATABASE_GENERAL_ERROR_MESSAGE);
         }
     }
+    public Optional<Product> findProductById(int id) {
+        log.info("Find product by certain id ProductRepositoryFacade: [{}]", id);
+        try {
+            return productRepository.findById(id);
+        } catch (Exception e) {
+            log.error("Error occurred while finding product by id ProductRepositoryFacade: [{}]", e.getMessage());
+            throw handleInternalServerErrorException(DATABASE_GENERAL_ERROR_MESSAGE);
+        }
+    }
 
     public void updateProduct(Product product) {
         log.info("update product ProductRepositoryFacade: [{}]", product.getId());

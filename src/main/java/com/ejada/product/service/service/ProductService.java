@@ -2,8 +2,8 @@ package com.ejada.product.service.service;
 
 import com.ejada.product.service.exception.BusinessException;
 import com.ejada.product.service.exception.ErrorCodeEnum;
-import com.ejada.product.service.model.dto.CreateProductRequest;
-import com.ejada.product.service.model.dto.CreateProductResponse;
+import com.ejada.product.service.model.request.CreateProductRequest;
+import com.ejada.product.service.model.response.CreateProductResponse;
 import com.ejada.product.service.model.entity.Category;
 import com.ejada.product.service.model.entity.Product;
 import com.ejada.product.service.model.filter.ProductFilter;
@@ -72,7 +72,7 @@ public class ProductService {
 
     // Soft delete
     public void softDeleteProduct(int productId) {
-        Product product = productRepository.findById(productId)
+        Product product = productRepositoryFacade.findProductById(productId)
                 .orElseThrow(() -> BusinessException.builder().httpStatus(HttpStatus.BAD_REQUEST)
                         .errorCode(ErrorCodeEnum.BAD_REQUEST.getCode())
                         .message(PRODUCT_NOT_FOUND_ERROR_MESSAGE + productId)
@@ -80,7 +80,7 @@ public class ProductService {
 
         if (product.getDeletedAt() == null) {
             product.setDeletedAt(LocalDateTime.now());
-            productRepository.save(product);
+            productRepositoryFacade.updateProduct(product);
         } else {
 
             throw BusinessException.builder().httpStatus(HttpStatus.BAD_REQUEST)

@@ -1,4 +1,4 @@
-package com.ejada.product.service.model.dto;
+package com.ejada.product.service.model.response;
 
 import com.ejada.product.service.model.entity.Customer;
 import com.fasterxml.jackson.annotation.JsonProperty;

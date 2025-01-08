@@ -1,6 +1,5 @@
-package com.ejada.product.service.model.dto;
+package com.ejada.product.service.model.response;
 
-import com.ejada.product.service.model.entity.Order;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
