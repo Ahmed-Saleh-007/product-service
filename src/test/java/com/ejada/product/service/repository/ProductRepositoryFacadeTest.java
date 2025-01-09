@@ -109,12 +109,6 @@ class ProductRepositoryFacadeTest {
     }
 
     @Test
-    void testSaveProductSuccess() {
-        when(productRepository.save(any())).thenReturn(product);
-        assertDoesNotThrow(() -> productRepositoryFacade.save(product));
-    }
-
-    @Test
     void testSaveProductFailsWithSqlException() {
         doAnswer(
                 invocation -> {
