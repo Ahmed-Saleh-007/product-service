@@ -2,14 +2,13 @@ package com.ejada.product.service.repository;
 
 import com.ejada.product.service.exception.BusinessException;
 import com.ejada.product.service.repository.facade.PromotionRepositoryFacade;
+import java.sql.SQLException;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-
-import java.sql.SQLException;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;

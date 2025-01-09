@@ -1,8 +1,8 @@
 package com.ejada.product.service.repository;
 
 import com.ejada.product.service.model.entity.Order;
-import com.ejada.product.service.model.entity.Product;
 import com.ejada.product.service.model.filter.OrderFilter;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -21,4 +21,9 @@ public interface OrderRepository extends CrudRepository<Order, Integer> {
             AND (:#{#orderFilter.createdAtEnd} IS NULL OR order.createdAt <= :#{#orderFilter.createdAtEnd})
             """)
     Page<Order> findAllByCustomerIdAndCreationDate(OrderFilter orderFilter, Pageable pageable);
+
+
+    @EntityGraph(attributePaths = {"orderProducts.product.category"})
+    List<Order> findAllByCustomerId(Integer customerId);
 }
+

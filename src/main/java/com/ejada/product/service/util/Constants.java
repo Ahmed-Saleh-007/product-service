@@ -35,6 +35,6 @@ public class Constants {
     public static final String PRODUCT_REQUIRED = "Product ID is required.";
     public static final String PRODUCT_QUANTITY_REQUIRED = "Quantity is required.";
     public static final String POSITIVE_QUANTITY = "Quantity must be greater than zero.";
+    public static final String NO_ORDER_HISTORY_FOUND = "No order history found for customer ID: ";
     public static final String INVALID_DATES_FILTER_ERROR_MESSAGE = "Start date should be before end date";
-
 }

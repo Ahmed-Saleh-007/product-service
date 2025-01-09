@@ -1,5 +1,6 @@
 package com.ejada.product.service.service;
 
+
 import com.ejada.product.service.exception.CommonExceptionHandler;
 import com.ejada.product.service.model.entity.Customer;
 import com.ejada.product.service.model.entity.Order;
@@ -12,20 +13,14 @@ import com.ejada.product.service.model.mapper.OrderMapper;
 import com.ejada.product.service.model.request.CreateOrderRequest;
 import com.ejada.product.service.model.request.OrderProductRequest;
 import com.ejada.product.service.model.response.CreateOrderResponse;
+import com.ejada.product.service.model.response.OrderHistoryResponse;
 import com.ejada.product.service.model.response.OrdersResponse;
+import com.ejada.product.service.repository.OrderRepository;
 import com.ejada.product.service.repository.facade.CustomerRepositoryFacade;
 import com.ejada.product.service.repository.facade.OrderRepositoryFacade;
 import com.ejada.product.service.repository.facade.ProductRepositoryFacade;
 import com.ejada.product.service.repository.facade.PromotionRepositoryFacade;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -33,6 +28,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import static com.ejada.product.service.exception.CommonExceptionHandler.handleBadRequestException;
 import static com.ejada.product.service.exception.CommonExceptionHandler.handleInternalServerErrorException;
@@ -52,6 +54,8 @@ public class OrderService {
     private final ProductRepositoryFacade productRepositoryFacade;
     private final OrderRepositoryFacade orderRepositoryFacade;
     private final CustomerRepositoryFacade customerRepositoryFacade;
+    private final OrderRepository orderRepository;
+    private final OrderMapper orderMapper;
     private final PromotionRepositoryFacade promotionRepositoryFacade;
 
     public OrdersResponse getOrders(OrderFilter orderFilter) {
@@ -208,4 +212,10 @@ public class OrderService {
         }
     }
 
+    public List<OrderHistoryResponse> getOrderHistoryByCustomerId(int customerId) {
+        return orderMapper.mapToListOrderHistoryResponse(orderRepository.findAllByCustomerId(customerId));
+    }
+
 }
+
+

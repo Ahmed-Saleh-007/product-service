@@ -25,4 +25,5 @@ public interface ProductMapper {
     @Mapping(target = "stockQuantity", source = "quantity")
     Product mapToProductEntity(CreateProductRequest createProductRequest);
 
+
 }

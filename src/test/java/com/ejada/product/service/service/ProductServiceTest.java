@@ -4,11 +4,12 @@ import com.ejada.product.service.exception.BusinessException;
 import com.ejada.product.service.model.entity.Category;
 import com.ejada.product.service.model.entity.Product;
 import com.ejada.product.service.model.filter.ProductFilter;
-import com.ejada.product.service.model.mapper.ProductMapper;
 import com.ejada.product.service.model.request.CreateProductRequest;
 import com.ejada.product.service.model.response.CreateProductResponse;
 import com.ejada.product.service.repository.facade.CategoryRepositoryFacade;
 import com.ejada.product.service.repository.facade.ProductRepositoryFacade;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-
-import java.util.List;
-import java.util.Optional;
 
 import static com.ejada.product.service.utils.TestUtils.buildCreateProductRequest;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
