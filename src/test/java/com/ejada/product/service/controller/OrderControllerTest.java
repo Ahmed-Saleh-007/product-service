@@ -15,7 +15,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(OrderController.class)
 @TestInstance(PER_CLASS)
-public class OrderControllerTest {
+class OrderControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -31,5 +32,14 @@ public class OrderControllerTest {
                         .param("customerId", "3")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+
     }
+
+    @Test
+    void testGetProductsSuccessfully() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(ORDERS_BASE_URL + "/{id}", 2)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
 }

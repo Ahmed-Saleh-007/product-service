@@ -4,11 +4,11 @@ import com.ejada.product.service.exception.BusinessException;
 import com.ejada.product.service.model.entity.Category;
 import com.ejada.product.service.model.entity.Product;
 import com.ejada.product.service.model.filter.ProductFilter;
-import com.ejada.product.service.model.mapper.ProductMapper;
 import com.ejada.product.service.model.request.CreateProductRequest;
 import com.ejada.product.service.model.response.CreateProductResponse;
 import com.ejada.product.service.repository.facade.CategoryRepositoryFacade;
 import com.ejada.product.service.repository.facade.ProductRepositoryFacade;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -19,9 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import java.util.List;
-import java.util.Optional;
-
 import static com.ejada.product.service.util.Constants.PRODUCT_ALREADY_EXISTS_ERROR_MESSAGE;
 import static com.ejada.product.service.utils.TestUtils.buildCreateProductRequest;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -30,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
@@ -60,6 +58,7 @@ class ProductServiceTest {
                         .pageSize(10)
                         .build()));
     }
+
 
     @Test
     void testGetProductsWithAscOrderSuccess() {
@@ -106,6 +105,29 @@ class ProductServiceTest {
                         .build()));
     }
 
+
+    @Test
+    void testSoftDeleteProductSuccess() {
+        when(productRepositoryFacade.findProductById(anyInt()))
+                .thenReturn(Optional.of(Product.builder().build()));
+        doNothing().when(productRepositoryFacade).updateProduct(any());
+        assertDoesNotThrow(() -> productService.softDeleteProduct(1));
+    }
+
+    @Test
+    void testSoftDeleteProductWhenProductNotFoundThrowsException() {
+        when(productRepositoryFacade.findProductById(anyInt()))
+                .thenReturn(Optional.empty());
+        assertThrows(BusinessException.class, () -> productService.softDeleteProduct(1));
+    }
+
+    @Test
+    void testSoftDeleteProductWhenAlreadyDeletedThrowsException() {
+        when(productRepositoryFacade.findProductById(anyInt()))
+                .thenReturn(Optional.of(Product.builder().deletedAt(LocalDateTime.now()).build()));
+        assertThrows(BusinessException.class, () -> productService.softDeleteProduct(1));
+    }
+
     @Test
     void testCreateProductSuccess() {
         CreateProductRequest request = buildCreateProductRequest();
@@ -149,6 +171,4 @@ class ProductServiceTest {
 
         assertEquals(PRODUCT_ALREADY_EXISTS_ERROR_MESSAGE, exception.getMessage());
     }
-
-
 }

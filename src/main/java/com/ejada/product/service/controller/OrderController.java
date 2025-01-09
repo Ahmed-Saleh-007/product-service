@@ -97,6 +97,19 @@ public class OrderController {
     }
 
     @GetMapping("/{customerId}")
+    @Operation(description = "Get Order History For a Customer", summary = "Order History", tags = "Orders")
+    @ApiResponse(responseCode = "200", description = "Success",
+            content = @Content(schema = @Schema(implementation = OrderHistoryResponse.class)))
+    @ApiResponse(responseCode = "401", description = "Unauthorized",
+            content = @Content(schema = @Schema(implementation = ApiBusinessErrorResponse.class)))
+    @ApiResponse(responseCode = "400", description = "Bad request",
+            content = @Content(schema = @Schema(implementation = ApiBusinessErrorResponse.class)))
+    @ApiResponse(responseCode = "403", description = "Forbidden",
+            content = @Content(schema = @Schema(implementation = ApiBusinessErrorResponse.class)))
+    @ApiResponse(responseCode = "404", description = "Not found",
+            content = @Content(schema = @Schema(implementation = ApiBusinessErrorResponse.class)))
+    @ApiResponse(responseCode = "500", description = "Internal Server Error",
+            content = @Content(schema = @Schema(implementation = ApiBusinessErrorResponse.class)))
     public ResponseEntity<List<OrderHistoryResponse>> getOrderHistoryByCustomerId(@PathVariable int customerId) {
         List<OrderHistoryResponse> orderHistory = orderService.getOrderHistoryByCustomerId(customerId);
         return ResponseEntity.ok(orderHistory);
