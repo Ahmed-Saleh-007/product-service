@@ -13,18 +13,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ejada.product.service.util.Constants.DATABASE_GENERAL_ERROR_MESSAGE;
+import static com.ejada.product.service.utils.TestConstants.PRODUCT_NAME;
 import static com.ejada.product.service.utils.TestUtils.buildProduct;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -73,8 +80,8 @@ class ProductRepositoryFacadeTest {
         List<Product> result = productRepositoryFacade.findAllById(productIds);
 
         Assertions.assertNotNull(result);
-        Assertions.assertEquals(1, result.size());
-        Assertions.assertEquals(product.getId(), result.get(0).getId());
+        assertEquals(1, result.size());
+        assertEquals(product.getId(), result.get(0).getId());
 
         Mockito.verify(productRepository).findAllByIdExcludingDeleted(productIds);
     }
@@ -97,7 +104,7 @@ class ProductRepositoryFacadeTest {
         Mockito.when(productRepository.save(product)).thenReturn(product);
         product.setStockQuantity(9);
         Assertions.assertDoesNotThrow(() -> productRepositoryFacade.updateProduct(product));
-        Assertions.assertEquals(9, product.getStockQuantity());
+        assertEquals(9, product.getStockQuantity());
         Mockito.verify(productRepository).save(product);
     }
 
@@ -109,5 +116,50 @@ class ProductRepositoryFacadeTest {
         });
         Mockito.verify(productRepository).save(product);
     }
+
+    @Test
+    void testSaveProductSuccess() {
+        when(productRepository.save(product)).thenReturn(product);
+        assertDoesNotThrow(() -> productRepositoryFacade.save(product));
+    }
+
+    @Test
+    void testSaveProductFailure() {
+        doThrow(new RuntimeException("Database error")).when(productRepository).save(product);
+
+        BusinessException exception = assertThrows(
+                BusinessException.class,
+                () -> productRepositoryFacade.save(product)
+        );
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exception.getHttpStatus());
+        assertEquals(DATABASE_GENERAL_ERROR_MESSAGE, exception.getMessage());
+
+    }
+
+    @Test
+    void testFindByNameSuccess() {
+        String productName = PRODUCT_NAME;
+        when(productRepository.findByName(productName)).thenReturn(Optional.of(product));
+        Optional<Product> result = productRepositoryFacade.findByName(productName);
+
+        assertTrue(result.isPresent());
+        assertEquals(productName, result.get().getName());
+    }
+
+    @Test
+    void testFindByNameFailure() {
+        String productName = "Nonexistent Product";
+
+        when(productRepository.findByName(productName)).thenThrow(new RuntimeException("Database error"));
+
+        BusinessException exception = assertThrows(
+                BusinessException.class,
+                () -> productRepositoryFacade.findByName(productName)
+        );
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exception.getHttpStatus());
+        assertEquals(DATABASE_GENERAL_ERROR_MESSAGE, exception.getMessage());
+    }
+
 
 }

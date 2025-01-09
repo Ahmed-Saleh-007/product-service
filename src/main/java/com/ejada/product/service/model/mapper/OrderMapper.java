@@ -1,7 +1,9 @@
 package com.ejada.product.service.model.mapper;
 
+import com.ejada.product.service.model.entity.Customer;
 import com.ejada.product.service.model.entity.Order;
 import com.ejada.product.service.model.entity.OrderProduct;
+import com.ejada.product.service.model.response.GetOrdersCustomerResponse;
 import com.ejada.product.service.model.response.GetOrdersOrderProductResponse;
 import com.ejada.product.service.model.response.GetOrdersResponse;
 import org.mapstruct.Mapper;
@@ -19,6 +21,13 @@ public interface OrderMapper {
     @Mapping(target = "price", source = "price")
     @Mapping(target = "productName", expression = "java(orderProduct.getProduct().getName())")
     GetOrdersOrderProductResponse mapToGetOrdersOrderProductDto(OrderProduct orderProduct);
+
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "customerName", source = "name")
+    @Mapping(target = "customerEmail", source = "email")
+    @Mapping(target = "customerPhone", source = "phone")
+    @Mapping(target = "customerAddress", source = "address")
+    GetOrdersCustomerResponse mapToGetOrdersCustomerResponse(Customer customer);
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "customer", source = "customer")

@@ -20,23 +20,23 @@ public class GetOrdersResponse {
     private Integer id;
 
     @JsonProperty("Customer")
-    private Customer customer;
+    private GetOrdersCustomerResponse customer;
 
-    @JsonProperty("Total amount")
+    @JsonProperty("TotalAmount")
     private BigDecimal totalAmount;
 
-    @JsonProperty("Discount amount")
+    @JsonProperty("DiscountAmount")
     private BigDecimal discountAmount;
 
-    @JsonProperty("Total amount after discount")
+    @JsonProperty("TotalAmountAfterDiscount")
     private BigDecimal totalAmountAfterDiscount;
 
     @JsonProperty("Status")
     private String status;
 
-    @JsonProperty("Created at")
+    @JsonProperty("CreatedAt")
     private LocalDateTime createdAt;
 
-    @JsonProperty("Order Products")
+    @JsonProperty("OrderProducts")
     private List<GetOrdersOrderProductResponse> orderProducts;
 }

@@ -1,5 +1,6 @@
 package com.ejada.product.service.model.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -22,14 +23,17 @@ import static com.ejada.product.service.util.Constants.PRODUCT_REQUIRED;
 @NoArgsConstructor
 public class GetOrdersOrderProductResponse {
     @NotNull(message = PRODUCT_REQUIRED)
+    @JsonProperty("ProductID")
     private Integer productId;
 
     @NotNull(message = PRODUCT_QUANTITY_REQUIRED)
     @Positive(message = POSITIVE_QUANTITY)
+    @JsonProperty("Quantity")
     private Integer quantity;
 
     @NotNull(message = PRODUCT_PRICE_IS_REQUIRED_ERROR_MESSAGE)
     @Positive(message = PRODUCT_PRICE_MIN_VALUE_ERROR_MESSAGE)
+    @JsonProperty("Price")
     private BigDecimal price;
 
     @NotNull(message = PRODUCT_NAME_IS_REQUIRED_ERROR_MESSAGE)
