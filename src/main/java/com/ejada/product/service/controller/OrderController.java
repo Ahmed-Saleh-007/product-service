@@ -96,7 +96,7 @@ public class OrderController {
     @GetMapping("/{customerId}")
     @Operation(description = "Get Order History For a Customer", summary = "Order History", tags = "Orders")
     @ApiResponse(responseCode = "200", description = "Success",
-            content = @Content(schema = @Schema(implementation = CreateOrderResponse.class)))
+            content = @Content(schema = @Schema(implementation = OrderHistoryResponse.class)))
     @ApiResponse(responseCode = "401", description = "Unauthorized",
             content = @Content(schema = @Schema(implementation = ApiBusinessErrorResponse.class)))
     @ApiResponse(responseCode = "400", description = "Bad request",
