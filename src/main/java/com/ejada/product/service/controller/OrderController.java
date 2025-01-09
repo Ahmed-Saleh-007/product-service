@@ -1,29 +1,32 @@
 package com.ejada.product.service.controller;
-import com.ejada.product.service.model.response.OrdersResponse;
-import com.ejada.product.service.model.filter.OrderFilter;
+
 import com.ejada.product.service.exception.ApiBusinessErrorResponse;
+import com.ejada.product.service.model.filter.OrderFilter;
 import com.ejada.product.service.model.request.CreateOrderRequest;
 import com.ejada.product.service.model.response.CreateOrderResponse;
+import com.ejada.product.service.model.response.OrderHistoryResponse;
+import com.ejada.product.service.model.response.OrdersResponse;
 import com.ejada.product.service.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDate;
 
 
 @RestController
@@ -55,7 +58,7 @@ public class OrderController {
             @Parameter(description = "Page Size") @RequestParam(defaultValue = "10") @Min(1) int pageSize,
             @Parameter(description = "Sort Order") @RequestParam(required = false) String sortOrder,
             @Parameter(description = "Sort Field") @RequestParam(required = false) String sortField
-            ) {
+    ) {
         OrderFilter orderFilter = OrderFilter.builder()
                 .customerId(customerId)
                 .createdAtStart(createdAtStart != null ? createdAtStart.atStartOfDay() : null)
@@ -90,4 +93,11 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.createOrder(request));
 
     }
+
+    @GetMapping("/{customerId}")
+    public ResponseEntity<List<OrderHistoryResponse>> getOrderHistoryByCustomerId(@PathVariable int customerId) {
+        List<OrderHistoryResponse> orderHistory = orderService.getOrderHistoryByCustomerId(customerId);
+        return ResponseEntity.ok(orderHistory);
+    }
+
 }

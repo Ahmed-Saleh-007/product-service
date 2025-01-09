@@ -1,5 +1,7 @@
 package com.ejada.product.service.utils;
 
+import com.ejada.product.service.model.entity.Promotion;
+import com.ejada.product.service.model.enums.DiscountTypeEnum;
 import com.ejada.product.service.model.request.CreateOrderRequest;
 import com.ejada.product.service.model.request.CreateProductRequest;
 import com.ejada.product.service.model.request.OrderProductRequest;
@@ -33,6 +35,24 @@ public class TestUtils {
         customer.setId(CUSTOMER_ID);
         customer.setName(CUSTOMER_NAME);
         return customer;
+    }
+
+    public static Promotion buildPrecentagePromotion() {
+        return Promotion.builder()
+                .id(1)
+                .code("PROMO2025")
+                .discountType(DiscountTypeEnum.PERCENTAGE)
+                .discountValue(BigDecimal.valueOf(10.00))
+                .build();
+    }
+
+    public static Promotion buildAmountPromotion() {
+        return Promotion.builder()
+                .id(2)
+                .code("PROMO500")
+                .discountType(DiscountTypeEnum.FLAT_AMOUNT)
+                .discountValue(BigDecimal.valueOf(500.00))
+                .build();
     }
 
     public static CreateOrderRequest buildOrderRequest()

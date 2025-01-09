@@ -12,10 +12,20 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateOrderResponse {
+
     @JsonProperty("OrderId")
     private Integer orderId;
+
     @JsonProperty("TotalAmount")
     private BigDecimal totalAmount;
+
+    @JsonProperty("DiscountAmount")
+    private BigDecimal discountAmount;
+
+    @JsonProperty("TotalAmountAfterDiscount")
+    private BigDecimal totalAmountAfterDiscount;
+
     @JsonProperty("Status")
     private String status;
+
 }

@@ -43,13 +43,16 @@ class ProductRepositoryFacadeTest {
 
     @MockitoBean
     private ProductRepository productRepository;
+
     private Product product;
+
     @BeforeEach
     void setup() {
         product = buildProduct();
     }
+
     @Test
-    void testGetProductsSuccess() {
+    void testFindAllProductsByCategoryAndPriceRangeSuccess() {
         when(productRepository.findAllByCategoryAndPriceRange(any(), any()))
                 .thenReturn(Page.empty());
         assertDoesNotThrow(() -> productRepositoryFacade.findAllByCategoryAndPriceRange(
@@ -58,7 +61,7 @@ class ProductRepositoryFacadeTest {
     }
 
     @Test
-    void testGetProductsFailsWithSqlException() {
+    void testFindAllProductsByCategoryAndPriceRangeFailsWithSqlException() {
         doAnswer(
                 invocation -> {
                     throw new SQLException("");
@@ -70,6 +73,59 @@ class ProductRepositoryFacadeTest {
                         ProductFilter.builder().build(),
                         PageRequest.of(0, 10)));
     }
+
+    @Test
+    void testFindProductByIdSuccess() {
+        when(productRepository.findById(any())).thenReturn(Optional.of(product));
+        assertDoesNotThrow(() -> productRepositoryFacade.findProductById(1));
+    }
+
+    @Test
+    void testFindProductByIdFailsWithSqlException() {
+        doAnswer(
+                invocation -> {
+                    throw new SQLException("");
+                })
+                .when(productRepository)
+                .findById(any());
+        assertThrows(BusinessException.class, () -> productRepositoryFacade.findProductById(1));
+    }
+
+    @Test
+    void testFindProductByNameSuccess() {
+        when(productRepository.findByName(any())).thenReturn(Optional.of(product));
+        assertDoesNotThrow(() -> productRepositoryFacade.findByName(""));
+    }
+
+    @Test
+    void testFindProductByNameFailsWithSqlException() {
+        doAnswer(
+                invocation -> {
+                    throw new SQLException("");
+                })
+                .when(productRepository)
+                .findByName(any());
+        assertThrows(BusinessException.class, () -> productRepositoryFacade.findByName(""));
+    }
+
+    @Test
+    void testSaveProductSuccess() {
+        when(productRepository.save(any())).thenReturn(product);
+        assertDoesNotThrow(() -> productRepositoryFacade.save(product));
+    }
+
+    @Test
+    void testSaveProductFailsWithSqlException() {
+        doAnswer(
+                invocation -> {
+                    throw new SQLException("");
+                })
+                .when(productRepository)
+                .save(any());
+        assertThrows(BusinessException.class, () -> productRepositoryFacade.save(product));
+    }
+
+
     @Test
     void findAllById_success() {
         List<Integer> productIds = List.of(1, 2, 3);

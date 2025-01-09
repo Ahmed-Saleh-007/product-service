@@ -18,7 +18,7 @@ public class CategoryRepositoryFacade {
     private final CategoryRepository categoryRepository;
 
     public Optional<Category> findById(Integer categoryId) {
-        try{
+        try {
             return categoryRepository.findById(categoryId);
         } catch (Exception e) {
             log.error("Error occurred while finding category by ID CategoryRepositoryFacade: [{}]", categoryId);
@@ -26,4 +26,5 @@ public class CategoryRepositoryFacade {
         }
 
     }
+
 }

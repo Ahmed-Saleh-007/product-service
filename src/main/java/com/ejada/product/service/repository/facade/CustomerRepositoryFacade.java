@@ -15,7 +15,9 @@ import static com.ejada.product.service.util.Constants.DATABASE_GENERAL_ERROR_ME
 @Slf4j
 @RequiredArgsConstructor
 public class CustomerRepositoryFacade {
+
     private final CustomerRepository customerRepository;
+
     public Optional<Customer> findById(Integer id) {
         log.info("Find customer by id CustomerRepositoryFacade: [{}]", id);
         try {
@@ -25,4 +27,5 @@ public class CustomerRepositoryFacade {
             throw handleInternalServerErrorException(DATABASE_GENERAL_ERROR_MESSAGE);
         }
     }
+
 }

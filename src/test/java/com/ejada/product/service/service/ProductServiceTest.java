@@ -9,6 +9,8 @@ import com.ejada.product.service.model.request.CreateProductRequest;
 import com.ejada.product.service.model.response.CreateProductResponse;
 import com.ejada.product.service.repository.facade.CategoryRepositoryFacade;
 import com.ejada.product.service.repository.facade.ProductRepositoryFacade;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
