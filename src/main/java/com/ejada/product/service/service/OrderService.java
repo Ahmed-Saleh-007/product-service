@@ -1,6 +1,8 @@
 package com.ejada.product.service.service;
 
 
+import com.ejada.product.service.event.ProductLowStockProducer;
+import com.ejada.product.service.event.message.LowStockMessage;
 import com.ejada.product.service.exception.CommonExceptionHandler;
 import com.ejada.product.service.model.entity.Customer;
 import com.ejada.product.service.model.entity.Order;
@@ -30,6 +32,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -57,6 +60,10 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final PromotionRepositoryFacade promotionRepositoryFacade;
+    private final ProductLowStockProducer productLowStockProducer;
+
+    @Value("${constants.stock-threshold}")
+    private Integer stockThreshold;
 
     public OrdersResponse getOrders(OrderFilter orderFilter) {
         log.info("Get orders by filter: [{}]", orderFilter.toString());
@@ -146,6 +153,13 @@ public class OrderService {
             // update stock
             product.setStockQuantity(product.getStockQuantity() - orderProductRequest.getQuantity());
             productRepositoryFacade.updateProduct(product);
+            if (product.getStockQuantity() < stockThreshold)
+            {
+                productLowStockProducer.publishLowStockEvent(
+                        LowStockMessage.builder()
+                                .productId(product.getId())
+                                .build());
+            }
 
             // Create OrderProduct
             OrderProduct orderProduct = new OrderProduct();
