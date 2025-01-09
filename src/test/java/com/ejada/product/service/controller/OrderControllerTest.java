@@ -28,19 +28,6 @@ class OrderControllerTest {
     @Test
     void testGetProductsSuccessfully() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(ORDERES_BASE_URL + "/{id}", 2)
-                        .param("OredreId", "5")
-                        .param("OrderDate", "2025-01-09T11:21:50.939231")
-                        .param("OrderStatus", "completed")
-                        .param("TotalCost", "500.0")
-                        .param("DiscountAmount", "0.00")
-                        .param("TotalAmountAfterDiscount", "500.00")
-                        .param("ProductDetails", "{\n" +
-                                "                \"ProductName\": \"AB\",\n" +
-                                "                \"Quantity\": 5,\n" +
-                                "                \"Price\": 100.00,\n" +
-                                "                \"Subtotal\": 500.00,\n" +
-                                "                \"CategoryName\": \"Home & Kitchen\"\n" +
-                                "            }")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

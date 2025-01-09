@@ -8,6 +8,7 @@ import com.ejada.product.service.model.request.CreateProductRequest;
 import com.ejada.product.service.model.response.CreateProductResponse;
 import com.ejada.product.service.repository.facade.CategoryRepositoryFacade;
 import com.ejada.product.service.repository.facade.ProductRepositoryFacade;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
@@ -55,6 +57,7 @@ class ProductServiceTest {
                         .pageSize(10)
                         .build()));
     }
+
     @Test
     void testCreateProductSuccess() {
         CreateProductRequest request = buildCreateProductRequest();
@@ -125,6 +128,29 @@ class ProductServiceTest {
                         .minPrice(1000.0)
                         .maxPrice(100.0)
                         .build()));
+    }
+
+
+    @Test
+    void testSoftDeleteProductSuccess() {
+        when(productRepositoryFacade.findProductById(anyInt()))
+                .thenReturn(Optional.of(Product.builder().build()));
+        doNothing().when(productRepositoryFacade).updateProduct(any());
+        assertDoesNotThrow(() -> productService.softDeleteProduct(1));
+    }
+
+    @Test
+    void testSoftDeleteProductWhenProductNotFoundThrowsException() {
+        when(productRepositoryFacade.findProductById(anyInt()))
+                .thenReturn(Optional.empty());
+        assertThrows(BusinessException.class, () -> productService.softDeleteProduct(1));
+    }
+
+    @Test
+    void testSoftDeleteProductWhenAlreadyDeletedThrowsException() {
+        when(productRepositoryFacade.findProductById(anyInt()))
+                .thenReturn(Optional.of(Product.builder().deletedAt(LocalDateTime.now()).build()));
+        assertThrows(BusinessException.class, () -> productService.softDeleteProduct(1));
     }
 
 }

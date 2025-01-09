@@ -73,12 +73,10 @@ public class ProductService {
     public void softDeleteProduct(int productId) {
         Product product = productRepositoryFacade.findProductById(productId)
                 .orElseThrow(() -> handleInternalServerErrorException(PRODUCT_NOT_FOUND_ERROR_MESSAGE + productId));
-
         if (product.getDeletedAt() == null) {
             product.setDeletedAt(LocalDateTime.now());
             productRepositoryFacade.updateProduct(product);
         } else {
-
             throw handleInternalServerErrorException(PRODUCT_IS_ALREADY_DELETED);
         }
     }
