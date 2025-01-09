@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
+import static com.ejada.product.service.util.Constants.PRODUCT_ALREADY_EXISTS_ERROR_MESSAGE;
 import static com.ejada.product.service.utils.TestUtils.buildCreateProductRequest;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -58,32 +59,6 @@ class ProductServiceTest {
                         .build()));
     }
 
-    @Test
-    void testCreateProductSuccess() {
-        CreateProductRequest request = buildCreateProductRequest();
-
-        Product mappedProduct = new Product();
-        mappedProduct.setName(request.getName());
-        mappedProduct.setPrice(request.getPrice());
-        mappedProduct.setDescription(request.getDescription());
-        mappedProduct.setStockQuantity(request.getQuantity());
-
-        Category category = new Category();
-        category.setId(1);
-        category.setName("Test Category");
-
-        when(productRepositoryFacade.findByName(request.getName())).thenReturn(Optional.empty());
-        when(categoryRepositoryFacade.findById(request.getCategoryId())).thenReturn(Optional.of(category));
-        doNothing().when(productRepositoryFacade).save(any(Product.class));
-
-        CreateProductResponse response = productService.createProduct(request);
-        assertNotNull(response);
-        assertEquals(request.getName(), response.getName());
-        assertEquals(request.getPrice(), response.getPrice());
-        assertEquals(request.getDescription(), response.getDescription());
-        assertEquals(category, response.getCategory());
-        assertEquals(request.getQuantity(), response.getQuantity());
-    }
 
     @Test
     void testGetProductsWithAscOrderSuccess() {
@@ -153,4 +128,47 @@ class ProductServiceTest {
         assertThrows(BusinessException.class, () -> productService.softDeleteProduct(1));
     }
 
+    @Test
+    void testCreateProductSuccess() {
+        CreateProductRequest request = buildCreateProductRequest();
+
+        Product mappedProduct = new Product();
+        mappedProduct.setName(request.getName());
+        mappedProduct.setPrice(request.getPrice());
+        mappedProduct.setDescription(request.getDescription());
+        mappedProduct.setStockQuantity(request.getQuantity());
+
+        Category category = new Category();
+        category.setId(1);
+        category.setName("Test Category");
+
+        when(productRepositoryFacade.findByName(request.getName())).thenReturn(Optional.empty());
+        when(categoryRepositoryFacade.findById(request.getCategoryId())).thenReturn(Optional.of(category));
+        doNothing().when(productRepositoryFacade).save(any(Product.class));
+
+        CreateProductResponse response = productService.createProduct(request);
+        assertNotNull(response);
+        assertEquals(request.getName(), response.getName());
+        assertEquals(request.getPrice(), response.getPrice());
+        assertEquals(request.getDescription(), response.getDescription());
+        assertEquals(category, response.getCategory());
+        assertEquals(request.getQuantity(), response.getQuantity());
+    }
+
+    @Test
+    void testCreateProductFailureWhenProductNameExists() {
+        CreateProductRequest request = buildCreateProductRequest();
+
+        Product existingProduct = new Product();
+        existingProduct.setName(request.getName());
+
+        when(productRepositoryFacade.findByName(request.getName())).thenReturn(Optional.of(existingProduct));
+
+        Exception exception = assertThrows(
+                BusinessException.class,
+                () -> productService.createProduct(request)
+        );
+
+        assertEquals(PRODUCT_ALREADY_EXISTS_ERROR_MESSAGE, exception.getMessage());
+    }
 }

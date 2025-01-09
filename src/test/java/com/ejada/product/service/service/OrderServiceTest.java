@@ -13,11 +13,11 @@ import com.ejada.product.service.repository.facade.ProductRepositoryFacade;
 import com.ejada.product.service.repository.facade.PromotionRepositoryFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -32,28 +32,29 @@ import static com.ejada.product.service.utils.TestUtils.buildProduct;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
-
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@TestInstance(PER_CLASS)
 public class OrderServiceTest {
 
-    @Mock
+    @Autowired
+    private OrderService orderService;
+
+    @MockitoBean
     private CustomerRepositoryFacade customerRepositoryFacade;
 
-    @Mock
+    @MockitoBean
     private ProductRepositoryFacade productRepositoryFacade;
 
-    @Mock
+    @MockitoBean
     private OrderRepositoryFacade orderRepositoryFacade;
 
-    @Mock
+    @MockitoBean
     private PromotionRepositoryFacade promotionRepositoryFacade;
-
-    @InjectMocks
-    private OrderService orderService;
 
     // Test data setup
     private CreateOrderRequest createOrderRequest;

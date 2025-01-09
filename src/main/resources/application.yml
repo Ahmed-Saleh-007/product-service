@@ -2,8 +2,16 @@ spring:
   application:
     name: product-service
 
+  kafka:
+    retries: 5
+    bootstrap-servers: localhost:9092
+    topic:
+      product-low-stock: product-low-stock
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   datasource:
-    url: jdbc:h2:file:/data/ecommerce1 #this if you want the database to be persistent
+    url: jdbc:h2:file:/data/ecommerce #this if you want the database to be persistent
     #url: jdbc:h2:mem:ecommerce;
     driver-class-name: org.h2.Driver
     username: sa
@@ -34,3 +42,6 @@ management:
       exposure:
         include: "*"
       base-path: /actuator
+
+constants:
+  stock-threshold: 5
