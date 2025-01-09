@@ -39,16 +39,18 @@ public class OrderController {
 
     @GetMapping
     @Operation(description = "Get Orders", summary = "Get Orders", tags = "Orders")
-    @ApiResponse(responseCode = "200", description = "Success")
-    @ApiResponse(responseCode = "401", description = "Unauthorized")
-    @ApiResponse(responseCode = "400", description = "Bad request")
-    @ApiResponse(responseCode = "403", description = "Forbidden")
-    @ApiResponse(responseCode = "404", description = "Not found")
-    @ApiResponse(responseCode = "405", description = "Method Not Allowed")
-    @ApiResponse(responseCode = "406", description = "Not Acceptable")
-    @ApiResponse(responseCode = "429", description = "Too Many Requests")
-    @ApiResponse(responseCode = "500", description = "Internal Server Error")
-    @ApiResponse(responseCode = "502", description = "Bad Gateway")
+    @ApiResponse(responseCode = "200", description = "Success",
+            content = @Content(schema = @Schema(implementation = OrdersResponse.class)))
+    @ApiResponse(responseCode = "401", description = "Unauthorized",
+            content = @Content(schema = @Schema(implementation = ApiBusinessErrorResponse.class)))
+    @ApiResponse(responseCode = "400", description = "Bad request",
+            content = @Content(schema = @Schema(implementation = ApiBusinessErrorResponse.class)))
+    @ApiResponse(responseCode = "403", description = "Forbidden",
+            content = @Content(schema = @Schema(implementation = ApiBusinessErrorResponse.class)))
+    @ApiResponse(responseCode = "404", description = "Not found",
+            content = @Content(schema = @Schema(implementation = ApiBusinessErrorResponse.class)))
+    @ApiResponse(responseCode = "500", description = "Internal Server Error",
+            content = @Content(schema = @Schema(implementation = ApiBusinessErrorResponse.class)))
     public ResponseEntity<OrdersResponse> getOrders(
             @Parameter(description = "Customer ID") @RequestParam(required = false) Integer customerId,
             @Parameter(description = "Min Total Amount") @RequestParam(required = false) LocalDate createdAtStart,
