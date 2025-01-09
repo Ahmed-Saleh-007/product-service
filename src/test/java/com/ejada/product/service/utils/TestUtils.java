@@ -2,6 +2,7 @@ package com.ejada.product.service.utils;
 
 import com.ejada.product.service.model.entity.Promotion;
 import com.ejada.product.service.model.enums.DiscountTypeEnum;
+import com.ejada.product.service.model.filter.OrderFilter;
 import com.ejada.product.service.model.request.CreateOrderRequest;
 import com.ejada.product.service.model.request.CreateProductRequest;
 import com.ejada.product.service.model.request.OrderProductRequest;
@@ -9,6 +10,7 @@ import com.ejada.product.service.model.entity.Customer;
 import com.ejada.product.service.model.entity.Product;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.ejada.product.service.utils.TestConstants.CUSTOMER_ID;
@@ -74,6 +76,13 @@ public class TestUtils {
                 .description("")
                 .categoryId(1)
                 .quantity(5)
+                .build();
+    }
+
+    public static OrderFilter buildOrderFilter() {
+        return OrderFilter.builder()
+                .customerId(3)
+                .pageSize(1)
                 .build();
     }
 }

@@ -1,6 +1,7 @@
 package com.ejada.product.service.repository;
 
 import com.ejada.product.service.exception.BusinessException;
+import com.ejada.product.service.model.entity.Customer;
 import com.ejada.product.service.model.entity.Order;
 import com.ejada.product.service.model.filter.OrderFilter;
 import com.ejada.product.service.repository.facade.OrderRepositoryFacade;
@@ -12,13 +13,18 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.ejada.product.service.util.Constants.DATABASE_GENERAL_ERROR_MESSAGE;
+import static com.ejada.product.service.utils.TestUtils.buildOrderFilter;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -46,7 +52,7 @@ public class OrderRepositoryFacadeTest {
     void createOrderSuccess() {
         Mockito.when(orderRepository.save(order)).thenReturn(order);
         Order result = orderRepositoryFacade.createOrder(order);
-        Assertions.assertNotNull(result);
+        assertNotNull(result);
         Assertions.assertEquals(order.getId(), result.getId());
         Assertions.assertEquals(order.getStatus(), result.getStatus());
         Assertions.assertEquals(order.getTotalAmount(), result.getTotalAmount());
@@ -82,5 +88,6 @@ public class OrderRepositoryFacadeTest {
                         OrderFilter.builder().build(),
                         PageRequest.of(0, 10)));
     }
+
 
 }
