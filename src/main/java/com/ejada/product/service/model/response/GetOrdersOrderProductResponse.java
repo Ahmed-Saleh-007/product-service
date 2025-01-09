@@ -30,13 +30,13 @@ public class GetOrdersOrderProductResponse {
 
     @NotNull(message = PRODUCT_QUANTITY_REQUIRED)
     @Positive(message = POSITIVE_QUANTITY)
-    @Schema(description = "Product ID", name = "ProductID")
+    @Schema(description = "Product Quantity", name = "Quantity")
     @JsonProperty("Quantity")
     private Integer quantity;
 
     @NotNull(message = PRODUCT_PRICE_IS_REQUIRED_ERROR_MESSAGE)
     @Positive(message = PRODUCT_PRICE_MIN_VALUE_ERROR_MESSAGE)
-    @Schema(description = "Product Price", name = "ProductPrice")
+    @Schema(description = "Product Price", name = "Price")
     @JsonProperty("Price")
     private BigDecimal price;
 

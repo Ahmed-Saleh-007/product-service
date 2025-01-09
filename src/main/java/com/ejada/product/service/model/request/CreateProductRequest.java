@@ -31,24 +31,24 @@ import static com.ejada.product.service.util.Constants.PRODUCT_QUANTITY_MIN_VALU
 public class CreateProductRequest {
     @NotBlank(message = PRODUCT_NAME_IS_REQUIRED_ERROR_MESSAGE)
     @Size(max = 255, message = PRODUCT_NAME_MAX_SIZE_ERROR_MESSAGE)
-    @Schema(description = "Product Name", name = "ProductName")
+    @Schema(description = "Product Name", name = "Name")
     @JsonProperty("Name")
     private String name;
 
     @NotNull(message = PRODUCT_PRICE_IS_REQUIRED_ERROR_MESSAGE)
     @DecimalMin(value = "0.0", inclusive = true, message = PRODUCT_PRICE_MIN_VALUE_ERROR_MESSAGE)
-    @Schema(description = "Product Price", name = "ProductPrice")
+    @Schema(description = "Product Price", name = "Price")
     @JsonProperty("Price")
     private BigDecimal price;
 
     @Size(max = 2000, message = DESCRIPTION_MAX_SIZE_ERROR_MESSAGE)
-    @Schema(description = "Product Description", name = "ProductDescription")
+    @Schema(description = "Product Description", name = "Description")
     @JsonProperty("Description")
     private String description;
 
     @NotNull(message = PRODUCT_QUANTITY_IS_REQUIRED_ERROR_MESSAGE)
     @Min(value = 0, message = PRODUCT_QUANTITY_MIN_VALUE_ERROR_MESSAGE)
-    @Schema(description = "Product Quantity", name = "ProductQuantity")
+    @Schema(description = "Product Quantity", name = "Quantity")
     @JsonProperty("Quantity")
     private Integer quantity;
 
