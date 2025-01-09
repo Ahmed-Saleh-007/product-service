@@ -38,8 +38,6 @@ public interface OrderMapper {
     List<GetOrdersResponse> mapToListGetOrdersResponse(List<Order> orders);
 
     List<OrderHistoryResponse> mapToListOrderHistoryResponse(List<Order> orders);
-    @Mapping(target = "customerId", source = "customer.id")
-    @Mapping(target = "customerName", source = "customer.name")
     @Mapping(target = "orderId", source = "id")
     @Mapping(target = "orderDate", source = "createdAt")
     @Mapping(target = "orderStatus", source = "status")
@@ -50,7 +48,6 @@ public interface OrderMapper {
     @Mapping(target = "productName", source = "product.name")
     @Mapping(target = "categoryName", source = "product.category.name")
     @Mapping(target = "subtotal",expression = "java(orderProduct.getPrice().multiply(java.math.BigDecimal.valueOf(orderProduct.getQuantity())))")
-
     ProductDetailsResponse mapToProductDetailsResponse(OrderProduct orderProduct);
 
 
