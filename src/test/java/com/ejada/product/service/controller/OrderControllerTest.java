@@ -22,13 +22,24 @@ class OrderControllerTest {
 
     @MockitoBean
     private OrderService orderService;
+    private static final String ORDERS_BASE_URL = "/api/orders";
 
-    private static final String ORDERES_BASE_URL = "/api/orders";
+    @Test
+    void testGetOrdersSuccessfully() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(ORDERS_BASE_URL)
+                        .param("createdAtStart", "2025-01-10")
+                        .param("createdAtEnd", "2025-01-11")
+                        .param("customerId", "3")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+    }
 
     @Test
     void testGetProductsSuccessfully() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(ORDERES_BASE_URL + "/{id}", 2)
+        mockMvc.perform(MockMvcRequestBuilders.get(ORDERS_BASE_URL + "/{id}", 2)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
 }
