@@ -1,5 +1,6 @@
 package com.ejada.product.service.utils;
 
+import com.ejada.product.service.event.message.LowStockMessage;
 import com.ejada.product.service.model.entity.Promotion;
 import com.ejada.product.service.model.enums.DiscountTypeEnum;
 import com.ejada.product.service.model.filter.OrderFilter;
@@ -8,9 +9,9 @@ import com.ejada.product.service.model.request.CreateProductRequest;
 import com.ejada.product.service.model.request.OrderProductRequest;
 import com.ejada.product.service.model.entity.Customer;
 import com.ejada.product.service.model.entity.Product;
+import com.ejada.product.service.model.response.CreateOrderResponse;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.ejada.product.service.utils.TestConstants.CUSTOMER_ID;
@@ -83,6 +84,20 @@ public class TestUtils {
         return OrderFilter.builder()
                 .customerId(3)
                 .pageSize(1)
+                .build();
+    }
+
+    public static LowStockMessage buildLowStockMsg() {
+        return LowStockMessage.builder()
+                .productId(1)
+                .build();
+    }
+
+    public static CreateOrderResponse buildOrderResponse() {
+        return CreateOrderResponse.builder()
+                .orderId(111)
+                .totalAmount(new BigDecimal("150.00"))
+                .status("completed")
                 .build();
     }
 }

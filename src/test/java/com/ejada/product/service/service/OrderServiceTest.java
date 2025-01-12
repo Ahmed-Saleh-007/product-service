@@ -84,7 +84,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    void createOrder_success() {
+    void createOrderSuccess() {
         when(customerRepositoryFacade.findById(1)).thenReturn(Optional.of(customer));
         when(productRepositoryFacade.findAllById(List.of(1))).thenReturn(List.of(product));
         when(orderRepositoryFacade.createOrder(Mockito.any(Order.class))).thenAnswer(invocation -> {
@@ -105,7 +105,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    void createOrder_customerNotFound() {
+    void createOrderCustomerNotFound() {
         when(customerRepositoryFacade.findById(1)).thenReturn(Optional.empty());
 
         assertThrows(BusinessException.class, () -> orderService.createOrder(createOrderRequest));
@@ -114,7 +114,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    void createOrder_productNotFound() {
+    void createOrderProductNotFound() {
         when(customerRepositoryFacade.findById(1)).thenReturn(Optional.of(customer));
         when(productRepositoryFacade.findAllById(List.of(1))).thenReturn(Collections.emptyList());
 
@@ -124,7 +124,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    void createOrder_insufficientStock() {
+    void createOrderInsufficientStock() {
         product.setStockQuantity(1);
 
         when(customerRepositoryFacade.findById(1)).thenReturn(Optional.of(customer));
