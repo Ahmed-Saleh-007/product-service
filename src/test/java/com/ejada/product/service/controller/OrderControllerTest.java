@@ -37,7 +37,7 @@ class OrderControllerTest {
 
     @Test
     void testGetOrderHistorySuccessfully() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(ORDERES_BASE_URL + "/{id}", 2)
+        mockMvc.perform(MockMvcRequestBuilders.get(ORDERS_BASE_URL + "/{id}", 2)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
