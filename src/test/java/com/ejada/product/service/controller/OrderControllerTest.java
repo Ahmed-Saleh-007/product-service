@@ -26,7 +26,7 @@ class OrderControllerTest {
     private static final String ORDERES_BASE_URL = "/api/orders";
 
     @Test
-    void testGetProductsSuccessfully() throws Exception {
+    void testGetOrderHistorySuccessfully() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(ORDERES_BASE_URL + "/{id}", 2)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
