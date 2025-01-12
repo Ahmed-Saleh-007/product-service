@@ -36,8 +36,8 @@ class OrderControllerTest {
     }
 
     @Test
-    void testGetProductsSuccessfully() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(ORDERS_BASE_URL + "/{id}", 2)
+    void testGetOrderHistorySuccessfully() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(ORDERES_BASE_URL + "/{id}", 2)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
